@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MarriageFormController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;
@@ -20,12 +21,24 @@ use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::post('/marriage-form', [MarriageFormController::class, 'store']);
+Route::get('/marriage-form', [MarriageFormController::class, 'show']);
 
 Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('dashboard');
-    Route::get('/admin/projects/destroy/{id}', [DashboardController::class, 'destroy'])->name('admin.project.delete');
+    Route::get('/admin/projects/destroy/{id}', [DashboardController::class, 'destroy'])->name('admin.projects.destroy');
     Route::get('/admin/projects/create', [DashboardController::class, 'ProjectCreate'])->name('admin.projects.create');
     Route::post('/admin/projects/store', [DashboardController::class, 'ProjectStore'])->name('admin.projects.store');
+    Route::get('/admin/projects/edit/{id}', [DashboardController::class, 'ProjectEdit'])->name('admin.projects.edit');
+    Route::put('/admin/projects/update/{id}', [DashboardController::class, 'ProjectUpdate'])->name('admin.projects.update');
+
+    Route::get('/admin/view-projects/{id}', [DashboardController::class, 'ViewProjects'])->name('admin.view-projects');
+    Route::get('/admin/user/destroy/{id}', [DashboardController::class, 'UserDelete'])->name('admin.user.destroy');
+
+    Route::get('/admin/company-details/{id}', [DashboardController::class, 'CompanyDetails'])->name('admin.company-details');
+    Route::get('admin/add-employee', action: [DashboardController::class, 'Employecreate'])->name('admin.add.employee');
+    Route::post('admin/store-employee', action: [DashboardController::class, 'EmployeStore'])->name('admin.employee.store');
+
 
     Route::get('/profile/edit', [DashboardController::class, 'adminDashboard'])->name('profile.edit');
     // Route::delete('/projects/{id}', [ProjectController::class, 'destroyByAdmin']);

@@ -21,7 +21,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'last_login',
+        'last_logout'
     ];
+    public function projects()
+    {
+        return $this->hasMany(Project::class, 'employee_id');
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -33,6 +39,7 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+
     /**
      * Get the attributes that should be cast.
      *
@@ -43,6 +50,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'last_login'=>'datetime',
+            'last_logout'=>'datetime'
         ];
     }
 }

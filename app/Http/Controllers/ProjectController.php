@@ -28,25 +28,56 @@ class ProjectController extends Controller
             'company_name' => 'required|string|max:255',
             'service_required' => 'required|string|max:255',
             'start_date' => 'required|date',
-            'completion_date' => 'required|date|after_or_equal:start_date',
+            // 'completion_date' => 'required|date|after_or_equal:start_date',
             'status' => 'required|in:started,in_progress,completed',
-             'document' => 'required|file|mimes:pdf,doc,docx',
+            // 'document' => 'required|file|mimes:pdf,doc,docx',
         ]);
 
-        $documentPath = $request->file('document')->store('documents', 'public');
+   // Initialize the document path as null
+$documentPath = null;
 
-        Project::create([
-            'employee_id' => $request->employee_id,
-            'company_name' => $request->company_name,
-            'service_required' => $request->service_required,
-            'start_date' => $request->start_date,
-            'completion_date' => $request->completion_date,
-            'status' => $request->status,
-            'document' => $documentPath,
-        ]);
+// Check if the document file is uploaded
+if ($request->hasFile('document')) {
+    $documentFile = $request->file('document');
+    $documentPath = $documentFile->getClientOriginalName(); // Get original file name
+    $destinationPath = public_path('uploads/documents'); // Target directory
+
+    // Ensure directory exists
+    if (!file_exists($destinationPath)) {
+        mkdir($destinationPath, 0755, true);
+    }
+
+    // Move file to target directory
+    $documentFile->move($destinationPath, $documentPath);
+
+    // Set the relative path for saving
+    $documentPath = 'uploads/documents/' . $documentPath;
+}
+
+// Save project data into the database
+Project::create([
+    'employee_id' => $request->employee_id,
+    'company_name' => $request->company_name,
+    'service_required' => $request->service_required,
+    'start_date' => $request->start_date,
+    'days' => $request->days,
+    'status' => $request->status,
+    'person_name' => $request->person_name,
+    'service_type' => $request->service_type,
+    'city'=>$request->city,
+    'email' => $request->email,
+    'ministry' => $request->ministry,
+    'country'=>$request->country,
+    'person_contact' => $request->person_contact,
+    'business_type'=>$request->business_type,
+    'commertial_register'=>$request->commertial_register,
+    'document' => $documentPath, // Save relative path or null if no file
+]);
+
 
         return redirect()->route('employee.dashboard')->with('success', 'Project created successfully.');
     }
+
 
     // Display the specified project
     public function show($id)
@@ -65,35 +96,70 @@ class ProjectController extends Controller
     // Update the specified project in storage
     public function update(Request $request, $id)
     {
+        // Find the project
         $project = Project::findOrFail($id);
 
+        // Validate the request data
         $request->validate([
             'company_name' => 'required|string|max:255',
             'service_required' => 'required|string|max:255',
             'start_date' => 'required|date',
-            'completion_date' => 'required|date|after_or_equal:start_date',
+            // 'completion_date' => 'required|date|after_or_equal:start_date',
             'status' => 'required|in:started,in_progress,completed',
-            'document' => 'nullable|file|mimes:pdf,doc,docx',
+            // 'document' => 'nullable|file|mimes:pdf,doc,docx',
         ]);
 
-        if ($request->hasFile('document')) {
-            // Delete old document
-            if ($project->document) {
-                Storage::delete($project->document);
+        try {
+            // Handle file upload if a new document is provided
+            if ($request->hasFile('document')) {
+                $documentFile = $request->file('document');
+                $documentPath = $documentFile->getClientOriginalName(); // Get the original file name
+                $destinationPath = public_path('uploads/documents'); // Target directory
+
+                // Ensure directory exists
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+
+                // Move file to target directory
+                $documentFile->move($destinationPath, $documentPath);
+
+                // Delete old document if it exists
+                if ($project->document && file_exists(public_path($project->document))) {
+                    unlink(public_path($project->document));
+                }
+
+                // Set new document path
+                $project->document = 'uploads/documents/' . $documentPath;
             }
-            $documentPath = $request->file('document')->store('documents');
-            $project->document = $documentPath;
+
+            // Update other fields safely
+            $project->update([
+                'employee_id' => $request->employee_id,
+                'company_name' => $request->company_name,
+                'service_required' => $request->service_required,
+                'start_date' => $request->start_date,
+                'completion_date' => $request->completion_date,
+                'status' => $request->status,
+                'person_name' => $request->person_name,
+                'service_type' => $request->service_type,
+                'person_contact' => $request->person_contact,
+                'city' => $request->city,
+                'email' => $request->email,
+                'country'=>$request->country,
+                'ministry' => $request->ministry,
+                'business_type'=>$request->business_type,
+                'commertial_register'=>$request->commertial_register,
+            ]);
+
+            return redirect()->route('employee.dashboard')->with('success', 'Project updated successfully.');
+
+        } catch (\Exception $e) {
+            // Log the exception for debugging
+            \Log::error('Error during project update: ' . $e->getMessage());
+
+            return redirect()->route('employee.dashboard')->with('error', 'Failed to update the project.');
         }
-
-        $project->update([
-            'company_name' => $request->company_name,
-            'service_required' => $request->service_required,
-            'start_date' => $request->start_date,
-            'completion_date' => $request->completion_date,
-            'status' => $request->status,
-        ]);
-
-        return redirect()->route('employee.dashboard')->with('success', 'Project updated successfully.');
     }
 
     // Remove the specified project from storage

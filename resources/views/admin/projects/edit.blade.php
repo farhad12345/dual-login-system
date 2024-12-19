@@ -5,12 +5,22 @@
                 <h4 class="mb-0 text-center">تعديل المشروع</h4>
             </div>
             <div class="card-body">
-                <form action="{{ route('projects.update', $project->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.projects.update', $project->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    @method('PUT')
+                    @method('PUT') <!-- Add PUT method for updating -->
                     <input type="hidden" value="{{ auth()->user()->id }}" name="employee_id">
 
                     <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="employee_id" class="form-label">الموظف</label>
+                            <select name="employee_id" id="employee_id" class="form-control">
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}" {{ $user->id == $project->employee_id ? 'selected' : '' }}>
+                                        {{ $user->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="col-md-6">
                             <label for="company_name" class="form-label">اسم الشركة</label>
                             <input type="text" name="company_name" id="company_name"
@@ -22,7 +32,9 @@
                                 </div>
                             @enderror
                         </div>
+                    </div>
 
+                    <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="person_name" class="form-label">اسم الشخص</label>
                             <input type="text" name="person_name" id="person_name"
@@ -34,9 +46,6 @@
                                 </div>
                             @enderror
                         </div>
-                    </div>
-
-                    <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="service_required" class="form-label">الخدمة المطلوبة</label>
                             <input type="text" name="service_required" id="service_required"
@@ -48,6 +57,9 @@
                                 </div>
                             @enderror
                         </div>
+                    </div>
+
+                    <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="person_contact" class="form-label">رقم الاتصال</label>
                             <input type="text" name="person_contact" id="person_contact"
@@ -59,16 +71,12 @@
                                 </div>
                             @enderror
                         </div>
-                    </div>
-
-                    <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="service_type" class="form-label">نوع الخدمة</label>
                             <select name="service_type" id="service_type" class="form-control @error('service_type') is-invalid @enderror">
-                                <option value="">Select</option>
-                                <option value="issuing_license" {{ old('service_type', $project->service_type) == 'issuing_license' ? 'selected' : '' }}>إصدار رخصة</option>
-                                <option value="foreign_investment" {{ old('service_type', $project->service_type) == 'foreign_investment' ? 'selected' : '' }}>الاستثمار الأجنبي</option>
-                                <option value="issuing_trade_mark" {{ old('service_type', $project->service_type) == 'issuing_trade_mark' ? 'selected' : '' }}>إصدار علامة تجارية</option>
+                                <option value="issuing_license" {{ $project->service_type == 'issuing_license' ? 'selected' : '' }}>إصدار رخصة</option>
+                                <option value="foreign_investment" {{ $project->service_type == 'foreign_investment' ? 'selected' : '' }}>الاستثمار الأجنبي</option>
+                                <option value="issuing_trade_mark" {{ $project->service_type == 'issuing_trade_mark' ? 'selected' : '' }}>إصدار علامة تجارية</option>
                             </select>
                             @error('service_type')
                                 <div class="invalid-feedback">
@@ -76,7 +84,9 @@
                                 </div>
                             @enderror
                         </div>
+                    </div>
 
+                    <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="start_date" class="form-label">تاريخ البدء</label>
                             <input type="date" name="start_date" id="start_date"
@@ -88,14 +98,16 @@
                                 </div>
                             @enderror
                         </div>
-                    </div>
-
-                    <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="days" class="form-label">عدد الأيام لإكمال</label>
-                            <input type="number" name="days" id="completion_date"
-                                class="form-control @error('days') is-invalid @enderror"
-                                value="{{ old('days', $project->days) }}" required>
+                            <select id="days" name="days" class="form-select">
+                                <option value="" disabled selected>اختر عدد الأيام</option>
+                                @for ($i = 1; $i <= 30; $i++)
+                                    <option {{ $project->days == $i ? 'selected' : '' }} value="{{ $i }}">{{ $i }}</option>
+                                @endfor
+                            </select>
+                            {{-- <input type="number" name="days" id="completion_date"
+                                class="form-control @error('days') is-invalid @enderror" required> --}}
                             @error('days')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -103,12 +115,15 @@
                             @enderror
                         </div>
 
+                    </div>
+
+                    <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="status" class="form-label">الحالة</label>
                             <select name="status" id="status" class="form-control">
-                                <option value="started" {{ old('status', $project->status) == 'started' ? 'selected' : '' }}>تم البدء</option>
-                                <option value="in_progress" {{ old('status', $project->status) == 'in_progress' ? 'selected' : '' }}>قيد التنفيذ</option>
-                                <option value="completed" {{ old('status', $project->status) == 'completed' ? 'selected' : '' }}>مكتمل</option>
+                                <option value="started" {{ $project->status == 'started' ? 'selected' : '' }}>تم البدء</option>
+                                <option value="in_progress" {{ $project->status == 'in_progress' ? 'selected' : '' }}>قيد التنفيذ</option>
+                                <option value="completed" {{ $project->status == 'completed' ? 'selected' : '' }}>مكتمل</option>
                             </select>
                             @error('status')
                                 <div class="invalid-feedback">
@@ -116,9 +131,6 @@
                                 </div>
                             @enderror
                         </div>
-                    </div>
-
-                    <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="city" class="form-label">مدينة</label>
                             <input type="text" name="city" id="city"
@@ -130,7 +142,33 @@
                                 </div>
                             @enderror
                         </div>
+                    </div>
+                    <div class="row mb-3">
 
+                        <div class="col-md-6">
+                            <label for="person_name" class="form-label">البريد الإلكتروني</label>
+                            <input type="text" name="email" id="email"
+                                class="form-control @error('email') is-invalid @enderror"
+                                value="{{ old('email', $project->email ?? '') }}" required>
+                            @error('email')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6">
+                            <label for="ministry" class="form-label">الوزارة</label>
+                            <input type="text"  value="{{ old('ministry', $project->ministry ?? '') }}" name="ministry" id="ministry"
+                                class="form-control @error('ministry') is-invalid @enderror" required>
+                            @error('ministry')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                    </div>
+                    <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="commertial_register" class="form-label">السجل التجاري</label>
                             <input type="text" name="commertial_register" id="commertial_register"
@@ -142,24 +180,34 @@
                                 </div>
                             @enderror
                         </div>
-                    </div>
+                        <div class="col-md-6">
+                            <label for="country" class="form-label">البلد</label>
+                            <input type="text" value="{{ $project->country }}" name="country" id="country"
+                                class="form-control @error('country') is-invalid @enderror" >
+                            @error('country')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
 
+                    </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="business_type" class="form-label">السجل التجاري</label>
-                            <input type="text"  value="{{ $project->business_type }}" name="business_type" id="business_type"
-                                class="form-control @error('business_type') is-invalid @enderror" required>
-                            @error('business_type')
+                            <label for="document" class="form-label">المستند</label>
+                            <input type="file" name="document" id="document"
+                                class="form-control @error('document') is-invalid @enderror">
+                            @error('document')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
                             @enderror
                         </div>
                         <div class="col-md-6">
-                            <label for="document" class="form-label">المستند</label>
-                            <input type="file" name="document" id="document"
-                                class="form-control @error('document') is-invalid @enderror">
-                            @error('document')
+                            <label for="business_type" class="form-label">نوع النشاط التجاري</label>
+                            <input type="text"  value="{{ $project->business_type }}" name="business_type" id="business_type"
+                                class="form-control @error('business_type') is-invalid @enderror" required>
+                            @error('business_type')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>

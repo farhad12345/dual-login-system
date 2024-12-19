@@ -36,18 +36,23 @@
 </head>
 
 <body>
+    <div class="py-12 bg-blue-100 min-h-screen" style="background-color: blue">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white shadow-md sm:rounded-lg overflow-hidden">
+                <div class="w-full p-6 mt-6 px-6 py-4 text-gray-900">
     <div class="welcome-container">
-        <h1>Welcome to the Dual Login System</h1>
+        <h1>مرحبًا بك في نظام تسجيل الدخول المزدوج</h1>
+           {{-- {{ Hash::make('jumana@123') }} --}}
         <div>
-            <a href="{{ route('login') }}?role=admin" class="btn btn-primary">Login as Admin</a>
+            <a href="{{ route('login') }}?role=admin" class="btn btn-primary">تسجيل الدخول كمسؤول</a>
         </div>
         <div>
-            <a href="{{ route('login') }}?role=employee" class="btn btn-secondary">Login as Employee</a>
+            <a href="{{ route('employee-login') }}?role=employee" class="btn btn-secondary">تسجيل الدخول كموظف</a>
         </div>
         <div>
-            <a href="{{ route('register') }}" class="btn btn-success">Register</a>
+            <a href="{{ route('register') }}" class="btn btn-success">التسجيل</a>
         </div>
     </div>
-</body>
+</div>  </div>  </div>
 
 </html>

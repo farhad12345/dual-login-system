@@ -25,7 +25,8 @@ class AuthenticatedSessionController extends Controller
     public function EmployeeStore(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
+        $user = $request->user(); // Get the authenticated user
+        $user->update(['last_login' => now()]);
         $request->session()->regenerate();
 
         return redirect()->intended(route('employee.dashboard', absolute: false));
@@ -36,7 +37,8 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
+        $user = $request->user(); // Get the authenticated user
+        $user->update(['last_login' => now()]);
         $request->session()->regenerate();
 
         return redirect()->intended(route('dashboard', absolute: false));
@@ -47,6 +49,12 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $user = Auth::user();
+
+        // Update the user's last logout timestamp
+        if ($user) {
+            $user->update(['last_logout' => now()]);
+        }
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

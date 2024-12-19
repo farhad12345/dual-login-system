@@ -1,25 +1,28 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="bg-black border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-
-
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     @if (Auth()->user()->role == 'admin')
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Dashboard') }}
+                          <span style="color:white"> {{ __('لوحة التحكم') }}</span>
+
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.add.employee')" :active="request()->routeIs('admin.add.employee')">
+                            <span style="color:white"> {{ __('إضافة موظف') }}</span>
                         </x-nav-link>
                     @else
                         <x-nav-link :href="route('employee.dashboard')" :active="request()->routeIs('employee.dashboard')">
-                            {{ __('Dashboard') }}
+                            <span style="color:white"> {{ __('لوحة التحكم') }}</span>
                         </x-nav-link>
                     @endif
+
+
                 </div>
             </div>
-
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">

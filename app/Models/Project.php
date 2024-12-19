@@ -13,7 +13,17 @@ class Project extends Model
         'start_date',
         'completion_date',
         'status',
-        'document'
+        'city',
+        'commertial_register',
+        'person_contact',
+        'person_name',
+        'service_type',
+        'document',
+        'days',
+        'email',
+        'ministry',
+        'business_type',
+        'country'
     ];
     public function employee()
     {

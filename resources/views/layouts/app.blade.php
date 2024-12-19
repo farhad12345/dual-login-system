@@ -19,30 +19,47 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+<style>
+    .logo {
+    width: 150px; /* Adjust width as needed */
+    height: auto; /* Maintain aspect ratio */
+    max-height: 150px; /* Limit maximum height */
+    object-fit: contain;
+    position: absolute;
+    margin-top: -70px;
+    color: white
+}
 
-<body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100">
+</style>
+<body class="font-sans antialiased" >
+    <div class="min-h-screen bg-gray-100" style="background-color:#F5F5DC">
         @include('layouts.navigation')
+
+        <!-- Centered Logo -->
+
 
         <!-- Page Heading -->
         @isset($header)
-            <header class="bg-white shadow">
+            <header class="bg-black shadow">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     {{ $header }}
                 </div>
             </header>
         @endisset
+
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
         @if (session('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
+
         <!-- Page Content -->
         <main>
             {{ $slot }}
         </main>
     </div>
 </body>
+
 
 </html>

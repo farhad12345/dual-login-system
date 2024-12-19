@@ -1,68 +1,101 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Projects') }}
-        </h2>
-    </x-slot>
+    <style>
+                .rtl-container {
+    direction: rtl;
+    text-align: right;
+}
+    </style>
+    <div class="py-12 bg-blue-100 min-h-screen" style="background-color:#F5F5DC">
+        <div class="flex justify-center my-6">
+            <img src="{{ asset('logo1.png') }}" class="logo">
+        </div>
+        {{-- <h2 class="text-lg font-semibold mb-4 text-right text-blue-700 px-4">{{ __('قائمة المشاريع') }}</h2> --}}
+        <div class="d-flex justify-content-end mb-3 px-4">
+            <a href="{{ route('projects.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> إضافة مشروع
+            </a>
+        </div>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 items-right text-right">
-                    <h2 class="text-lg font-semibold mb-4">{{ __('Projects List') }}</h2>
-                    <div class="text-right items-right">
-                        <a href="{{ route('projects.create') }}" class="btn btn-primary text-right">
-                            <i class="fas fa-plus"></i> Add Project
-                        </a>
-                    </div>
+        <!-- Card Container -->
+        <div class="px-4">
+            <div class="shadow-md rounded-lg overflow-hidden" style="background-color: burlywood">
+                <div class="p-6">
+                    <div class="rtl-container" style="direction: rtl;">
                     <table class="table table-striped table-hover align-middle">
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Employee</th>
-                                <th>Company Name</th>
-                                <th>Service Required</th>
-                                <th>Start Date</th>
-                                <th>Completion Date</th>
-                                <th>Status</th>
-                                <th>Document</th>
-                                <th>Actions</th>
+                                <th>اسم الشركة</th>
+                                <th>الخدمة المطلوبة</th>
+                                <th>تاريخ البدء</th>
+                                <th>عدد الأيام لإكمال</th>
+                                {{-- <th>الأيام المتبقية</th> --}}
+                                <th>اسم الشخص</th>
+                                <th>رقم التواصل</th>
+                                <th>نوع الخدمة</th>
+                                <th>المدينة</th>
+                                <th>السجل التجاري</th>
+                                <th>الحالة</th>
+                                <th>المستند</th>
+                                <th>الإجراءات</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($projects as $project)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $project->employee->name }}</td>
-                                    <td>{{ $project->company_name }}</td>
-                                    <td>{{ $project->service_required }}</td>
-                                    <td>{{ $project->start_date }}</td>
-                                    <td>{{ $project->completion_date }}</td>
-                                    <td>
-                                        <span
-                                            class="badge
-                                        {{ $project->status == 'started' ? 'bg-danger' : ($project->status == 'in_progress' ? 'bg-warning' : 'bg-success') }}">
-                                            {{ ucfirst(str_replace('_', ' ', $project->status)) }}
-                                        </span>
-                                    </td>
-                                    <td><a href="{{ Storage::url($project->document) }}" target="_blank">View</a></td>
-                                    <td>
-                                        <a href="{{ route('projects.edit', $project->id) }}"
-                                            class="btn btn-warning btn-sm">Edit</a>
-                                        <form action="{{ route('projects.destroy', $project->id) }}" method="POST"
-                                            class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Are you sure you want to delete this project?')">Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>{{ $project->company_name }}</td>
+                                <td>{{ $project->service_required }}</td>
+                             <td>{{ $project->start_date }}</td>
+                                <td>يوم {{ $project->days }}</td>
+                                {{-- <td>
+                                    @php
+                                        $currentDate = \Carbon\Carbon::now(); // Current date
+                                        $endDate = \Carbon\Carbon::parse($project->completion_date);
+                                        $daysToComplete = $endDate->diffInDays($currentDate, false); // Calculate remaining days
+                                        $daysToComplete = floor($daysToComplete); // Remove decimal part
+                                    @endphp
+                                    @if ($daysToComplete > 0)
+                                        {{ $daysToComplete }} الأيام المتبقية لإكمال المهمة
+                                    @elseif ($daysToComplete == 0)
+                                        {{ __('اليوم هو آخر موعد لإكمال المهمة') }}
+                                    @else
+                                        {{ abs($daysToComplete) }} الأيام المتأخرة
+                                    @endif
+                                </td> --}}
+
+                                <td>{{ $project->person_name }}</td>
+                                <td>{{ $project->person_contact }}</td>
+                                <td>{{ $project->service_type }}</td>
+                                <td>{{ $project->city }}</td>
+                                <td>{{ $project->commertial_register }}</td>
+                                <td>
+                                    <span class="badge {{ $project->status == 'started' ? 'bg-danger' : ($project->status == 'in_progress' ? 'bg-warning' : 'bg-success') }}">
+                                        {{
+                                            $project->status == 'started' ? 'تم البدء' :
+                                            ($project->status == 'in_progress' ? 'قيد التنفيذ' : 'مكتمل')
+                                        }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <a href="{{ asset($project->document) }}" target="_blank" class="text-blue-500 hover:underline">عرض</a>
+                                </td>
+                                <td>
+                                    <a href="{{ route('projects.edit', $project->id) }}" class="btn btn-warning btn-sm text-white">تعديل</a>
+                                    <form action="{{ route('projects.destroy', $project->id) }}" method="POST" class="d-inline" onsubmit="return confirm('هل أنت متأكد أنك تريد حذف هذا المشروع؟')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm text-white">حذف</button>
+                                    </form>
+
+                                </td>
+                            </tr>
                             @endforeach
                         </tbody>
+
                     </table>
-                </div>
-            </div>
         </div>
     </div>
+</div>
+
+
 </x-app-layout>

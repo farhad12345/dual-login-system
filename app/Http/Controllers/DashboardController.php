@@ -6,14 +6,38 @@ use App\Models\User;
 use App\Models\Project;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Validation\Rules;
 class DashboardController extends Controller
 {
     public function adminDashboard()
     {
-        $projects = Project::with('employee')->get();
-        return view('admin.dashboard', compact('projects'));
+        //  $users = User::where('role','employee')->get();
+        // $users = User::where('role', 'employee')
+        // ->leftJoin('projects', 'users.id', '=', 'projects.employee_id')
+        // ->select('users.*', \DB::raw('MAX(projects.created_at) as latest_project'))
+        // ->groupBy('users.id')
+        // ->orderByDesc('latest_project') // Order by the latest project date (NULL values go last)
+        // ->with(['projects' => function ($query) {
+        //     $query->latest('created_at')->limit(1); // Fetch the latest project for each user
+        // }])
+        // ->get();
+
+        $projects = Project::with('employee')
+        ->select('projects.*', 'users.id as user_id', 'users.name as employee_name')
+        ->leftJoin('users', 'projects.employee_id', '=', 'users.id')
+        ->whereIn('projects.id', function ($query) {
+            $query->select(DB::raw('MAX(id)'))
+                ->from('projects')
+                ->groupBy('projects.employee_id');
+        })
+        ->orderBy('projects.id', 'desc')
+        ->get();
+
+            return view('admin.dashboard', compact('projects'));
     }
 
     public function employeeDashboard()
@@ -21,6 +45,12 @@ class DashboardController extends Controller
         $employe_id = Auth()->user()->id;
         $projects = Project::where('employee_id', $employe_id)->with('employee')->get();
         return view('employee.dashboard', compact('projects'));
+    }
+
+    public function ViewProjects($id)
+    {
+        $projects = Project::where('employee_id', $id)->with('employee')->get();
+        return view('admin.projects.details',compact('projects'));
     }
     public function destroy($id)
     {
@@ -35,6 +65,13 @@ class DashboardController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Project deleted successfully.');
     }
+    public function UserDelete($id)
+    {
+        $project = User::findOrFail($id);
+        $project->delete();
+
+        return redirect()->route('dashboard')->with('success', 'User deleted successfully.');
+    }
     //admin project Create
     public function ProjectCreate()
     {
@@ -47,23 +84,156 @@ class DashboardController extends Controller
             'company_name' => 'required|string|max:255',
             'service_required' => 'required|string|max:255',
             'start_date' => 'required|date',
-            'completion_date' => 'required|date|after_or_equal:start_date',
+            'days' => 'required',
             'status' => 'required|in:started,in_progress,completed',
-            'document' => 'required|file|mimes:pdf,doc,docx',
+            // 'document' => 'required|file|mimes:pdf,doc,docx',
         ]);
 
-        $documentPath = $request->file('document')->store('documents', 'public');
+        // Initialize the document path as null
+        $documentPath = null;
 
+        // Check if the document file is uploaded
+        if ($request->hasFile('document')) {
+            $documentFile = $request->file('document');
+            $documentPath = $documentFile->getClientOriginalName(); // Get original file name
+            $destinationPath = public_path('uploads/documents'); // Target directory
+
+            // Ensure directory exists
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Move file to target directory
+            $documentFile->move($destinationPath, $documentPath);
+
+            // Set the relative path for saving
+            $documentPath = 'uploads/documents/' . $documentPath;
+        }
+
+        // Save project data into the database
         Project::create([
             'employee_id' => $request->employee_id,
             'company_name' => $request->company_name,
             'service_required' => $request->service_required,
             'start_date' => $request->start_date,
-            'completion_date' => $request->completion_date,
+            'days' => $request->days,
             'status' => $request->status,
-            'document' => $documentPath,
+            'person_name' => $request->person_name,
+            'service_type' => $request->service_type,
+            'city'=>$request->city,
+            'email' => $request->email,
+            'ministry' => $request->ministry,
+            'person_contact' => $request->person_contact,
+            'business_type'=>$request->business_type,
+            'country'=>$request->country,
+            'commertial_register'=>$request->commertial_register,
+            'document' => $documentPath, // Save relative path or null if no file
         ]);
 
         return redirect()->route('dashboard')->with('success', 'Project created successfully.');
+    }
+
+    public function ProjectUpdate(Request $request, $id)
+{
+    // Find the project
+    $project = Project::findOrFail($id);
+
+    // Validate the request data
+    $request->validate([
+        'company_name' => 'required|string|max:255',
+        'service_required' => 'required|string|max:255',
+        'start_date' => 'required|date',
+        'days' => 'required',
+        'status' => 'required|in:started,in_progress,completed',
+        // 'document' => 'nullable|file|mimes:pdf,doc,docx',
+    ]);
+
+    try {
+        // Handle file upload if a new document is provided
+        if ($request->hasFile('document')) {
+            $documentFile = $request->file('document');
+            $documentPath = $documentFile->getClientOriginalName(); // Get the original file name
+            $destinationPath = public_path('uploads/documents'); // Target directory
+
+            // Ensure directory exists
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Move file to target directory
+            $documentFile->move($destinationPath, $documentPath);
+
+            // Delete old document if it exists
+            if ($project->document && file_exists(public_path($project->document))) {
+                unlink(public_path($project->document));
+            }
+
+            // Set new document path
+            $project->document = 'uploads/documents/' . $documentPath;
+        }
+
+        // Update other fields safely
+        $project->update([
+            'employee_id' => $request->employee_id,
+                'company_name' => $request->company_name,
+                'service_required' => $request->service_required,
+                'start_date' => $request->start_date,
+                'completion_date' => $request->completion_date,
+                'status' => $request->status,
+                'person_name' => $request->person_name,
+                'service_type' => $request->service_type,
+                'person_contact' => $request->person_contact,
+                'city' => $request->city,
+                'days' => $request->days,
+                'email' => $request->email,
+                'ministry' => $request->ministry,
+                'country'=>$request->country,
+                'business_type'=>$request->business_type,
+                'commertial_register'=>$request->commertial_register,
+        ]);
+
+        return redirect()->route('dashboard')->with('success', 'Project updated successfully.');
+
+    } catch (\Exception $e) {
+        // Log the exception for debugging
+        \Log::error('Error during project update: ' . $e->getMessage());
+
+        return redirect()->route('dashboard')->with('error', 'Failed to update the project.');
+    }
+}
+    public function ProjectEdit($id)
+    {
+        $project = Project::findOrFail($id);
+        $users = User::where('role', 'employee','users')->get();
+        return view('admin.projects.edit', compact('project','users'));
+    }
+    public function CompanyDetails($id)
+    {
+        $projects = Project::where('employee_id', $id)->with('employee')->get();
+        return view('admin.projects.companydetails',compact('projects'));
+    }
+    public function Employecreate()
+    {
+
+        return view('admin.createEmploye');
+    }
+
+    public function EmployeStore(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role'=>'employee'
+        ]);
+
+        return redirect()->route('dashboard')->with('success', 'Project updated successfully.');
+
     }
 }

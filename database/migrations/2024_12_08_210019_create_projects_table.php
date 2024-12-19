@@ -17,9 +17,19 @@ return new class extends Migration
             $table->string('company_name');
             $table->string('service_required');
             $table->date('start_date');
-            $table->date('completion_date');
+            $table->date('completion_date')->nullable();
             $table->enum('status', ['started', 'in_progress', 'completed']);
             $table->string('document');
+            $table->string(column: 'city');
+            $table->string('commertial_register');
+            $table->string('person_name');
+            $table->string('person_contact');
+            $table->string('service_type');
+            $table->string(column: 'days');
+            $table->string(column: 'email');
+            $table->string(column: 'ministry');
+            $table->string('business_type');
+            $table->string('country');
             $table->timestamps();
         });
     }
