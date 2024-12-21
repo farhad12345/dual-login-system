@@ -44,7 +44,8 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
-
+        $user = $request->user(); // Get the authenticated user
+        $user->update(['last_login' => now()]);
         return redirect(route('employee.dashboard', absolute: false));
     }
 }

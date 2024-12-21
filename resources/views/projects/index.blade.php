@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+<x-app-layout>
     <div class="container mt-4">
         <h2>المشاريع</h2>
         <a href="{{ route('projects.create') }}" class="btn btn-primary mb-3">إضافة مشروع جديد</a>
@@ -56,4 +54,4 @@
             </tbody>
         </table>
     </div>
-@endsection
+</x-app-layout>

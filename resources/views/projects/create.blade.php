@@ -7,7 +7,7 @@
                                 <div class="card-body">
                                     <form action="{{ route('projects.store') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
-
+                                        <input type="hidden" value="{{ auth()->user()->id }}" name="employee_id">
                                         <div class="row mb-3">
 
                                             <div class="col-md-6">

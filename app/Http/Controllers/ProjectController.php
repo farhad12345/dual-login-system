@@ -11,7 +11,8 @@ class ProjectController extends Controller
     // Display a listing of the projects
     public function index()
     {
-        $projects = Project::with('employee')->get();
+        $employe_id = Auth()->user()->id;
+        $projects = Project::where('employee_id', $employe_id)->with('employee')->get();
         return view('projects.index', compact('projects'));
     }
 
