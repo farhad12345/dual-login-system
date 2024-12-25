@@ -1,18 +1,72 @@
 <x-app-layout>
     <style>
+        .table-blue th {
+            background-color: #003366 !important;
+            color: white !important;
+        }
+        .table-blue td {
+
+            color: black !important;
+        }
+        .table-blue th {
+
+color: black !important;
+}
+        .table-blue tbody tr:nth-child(even) {
+            background-color: #E6F7FF !important;
+        }
+        .table-blue tbody tr:nth-child(odd) {
+            background-color: #CCEBFF !important;
+        }
+        .table-blue td, .table-blue th {
+            border-color: #003366 !important;
+        }
+        .btn-primary {
+            background-color: #0066CC !important;
+            border-color: #0066CC !important;
+        }
+        .btn-primary:hover {
+            background-color: #0052A3 !important;
+            border-color: #0052A3 !important;
+        }
+        .btn-warning {
+            background-color: #FFCC00 !important;
+            border-color: #FFCC00 !important;
+        }
+        .btn-danger {
+            background-color: #FF3300 !important;
+            border-color: #FF3300 !important;
+        }
         .rtl-container {
     direction: rtl;
     text-align: right;
 }
+.table>:not(caption)>*>*:nth-child(even),
+.table tbody tr:nth-child(even) {
+    background-color: #F0F8FF !important; /* Alice Blue */
+    color: #003366; /* Navy Text */
+}
+
+.table>:not(caption)>*>*:nth-child(odd),
+.table tbody tr:nth-child(odd) {
+    background-color: #DDEEFF !important; /* Light Steel Blue */
+    color: #003366; /* Navy Text */
+}
+
+.table>:not(caption)>*>* th {
+    background-color: #003366 !important; /* Navy */
+    color: #FFFFFF !important; /* White Text */
+    border: 1px solid #003366 !important;
+}
 
     </style>
-   <div class="py-12 bg-blue-100 min-h-screen" style="background-color:#F5F5DC">
+   <div class="py-12 min-h-screen" style="background-color:#F0F8FF;">
     <div class="flex justify-center my-6">
         <img src="{{ asset('logo1.png') }}" class="logo">
     </div>
     <br><br>
     <div class="px-4">
-        <div class=" shadow-md rounded-lg overflow-hidden" style="background-color: burlywood">
+        <div class="bg-light shadow-md rounded-lg overflow-hidden">
             <div class="p-6">
                     <h2 class="text-2xl font-semibold mb-4 text-right text-blue-700">{{ __('قائمة المشاريع') }}</h2>
 
@@ -23,7 +77,7 @@
                     @endif
 
                     <div class="rtl-container" style="direction: rtl;">
-                        <table class="table table-bordered w-full min-w-full border-collapse bg-blue-50 text-right rounded-lg" >
+                        <table class="table table-bordered table-blue">
                             <thead class="bg-blue-600 text-white">
                                 <tr>
                                     <th>اسم الشركة</th>

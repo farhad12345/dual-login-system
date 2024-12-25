@@ -17,9 +17,18 @@ use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Mail;
 
 Route::get('/', function () {
     return view('welcome');
+});
+Route::get('/test-email', function () {
+    Mail::raw('This is a test email.', function ($message) {
+        $message->to('farhadkhanfarhad367@gmail.com')
+                ->subject('Test Email');
+    });
+    return 'Email sent!';
 });
 Route::post('/marriage-form', [MarriageFormController::class, 'store']);
 Route::get('/marriage-form', [MarriageFormController::class, 'show']);
@@ -38,6 +47,9 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function ()
     Route::get('/admin/company-details/{id}', [DashboardController::class, 'CompanyDetails'])->name('admin.company-details');
     Route::get('admin/add-employee', action: [DashboardController::class, 'Employecreate'])->name('admin.add.employee');
     Route::post('admin/store-employee', action: [DashboardController::class, 'EmployeStore'])->name('admin.employee.store');
+    Route::get('admin/users', action: [DashboardController::class, 'UsersList'])->name('admin.users.lists');
+
+    Route::get('admin/users/destroy/{id}', action: [DashboardController::class, 'UserDelete'])->name('admin.users.destroy');
 
 
     Route::get('/profile/edit', [DashboardController::class, 'adminDashboard'])->name('profile.edit');
@@ -76,7 +88,13 @@ Route::middleware('guest')->group(function () {
     Route::post('reset-password', [NewPasswordController::class, 'store'])
         ->name('password.store');
 });
-
+Route::get('/change-language/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'ar'])) {
+        App::setLocale($locale);
+        session(['locale' => $locale]); // Store the selected locale in the session
+    }
+    return redirect()->back();
+});
 Route::middleware('auth')->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');

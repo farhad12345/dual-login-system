@@ -6,11 +6,14 @@ use App\Models\User;
 use App\Models\Project;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rules;
+use App\Mail\ProjectCreatedNotification;
+
 class DashboardController extends Controller
 {
     public function adminDashboard()
@@ -35,7 +38,7 @@ class DashboardController extends Controller
                 ->groupBy('projects.employee_id');
         })
         ->orderBy('projects.id', 'desc')
-        ->get();
+        ->paginate(10);
 
             return view('admin.dashboard', compact('projects'));
     }
@@ -43,7 +46,9 @@ class DashboardController extends Controller
     public function employeeDashboard()
     {
         $employe_id = Auth()->user()->id;
-        $projects = Project::where('employee_id', $employe_id)->with('employee')->get();
+        $projects = Project::where('employee_id', $employe_id)->with('employee')
+        ->orderBy('id', 'desc')
+        ->paginate(10);
         return view('employee.dashboard', compact('projects'));
     }
 
@@ -88,30 +93,25 @@ class DashboardController extends Controller
             'status' => 'required|in:started,in_progress,completed',
             // 'document' => 'required|file|mimes:pdf,doc,docx',
         ]);
-
         // Initialize the document path as null
         $documentPath = null;
-
         // Check if the document file is uploaded
         if ($request->hasFile('document')) {
             $documentFile = $request->file('document');
             $documentPath = $documentFile->getClientOriginalName(); // Get original file name
             $destinationPath = public_path('uploads/documents'); // Target directory
-
             // Ensure directory exists
             if (!file_exists($destinationPath)) {
                 mkdir($destinationPath, 0755, true);
             }
-
             // Move file to target directory
             $documentFile->move($destinationPath, $documentPath);
-
             // Set the relative path for saving
             $documentPath = 'uploads/documents/' . $documentPath;
         }
 
         // Save project data into the database
-        Project::create([
+        $project= Project::create([
             'employee_id' => $request->employee_id,
             'company_name' => $request->company_name,
             'service_required' => $request->service_required,
@@ -129,7 +129,8 @@ class DashboardController extends Controller
             'commertial_register'=>$request->commertial_register,
             'document' => $documentPath, // Save relative path or null if no file
         ]);
-
+        $user = User::where('role','admin')->first();
+        Mail::to($user->email)->send(new ProjectCreatedNotification($project->toArray()));
         return redirect()->route('dashboard')->with('success', 'Project created successfully.');
     }
 
@@ -212,6 +213,13 @@ class DashboardController extends Controller
         $projects = Project::where('employee_id', $id)->with('employee')->get();
         return view('admin.projects.companydetails',compact('projects'));
     }
+    public function UsersList()
+    {
+        $users = User::orderBy('id', 'desc')
+        ->paginate(10);
+        return view('admin.users',compact('users'));
+    }
+
     public function Employecreate()
     {
 

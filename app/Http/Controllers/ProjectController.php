@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\User;
 use App\Models\Project;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\ProjectCreatedNotification;
 
 class ProjectController extends Controller
 {
@@ -33,49 +36,46 @@ class ProjectController extends Controller
             'status' => 'required|in:started,in_progress,completed',
             // 'document' => 'required|file|mimes:pdf,doc,docx',
         ]);
-
    // Initialize the document path as null
-$documentPath = null;
-
-// Check if the document file is uploaded
-if ($request->hasFile('document')) {
-    $documentFile = $request->file('document');
-    $documentPath = $documentFile->getClientOriginalName(); // Get original file name
-    $destinationPath = public_path('uploads/documents'); // Target directory
-
-    // Ensure directory exists
-    if (!file_exists($destinationPath)) {
-        mkdir($destinationPath, 0755, true);
+      $documentPath = null;
+    // Check if the document file is uploaded
+    if ($request->hasFile('document')) {
+        $documentFile = $request->file('document');
+        $documentPath = $documentFile->getClientOriginalName(); // Get original file name
+        $destinationPath = public_path('uploads/documents'); // Target directory
+        // Ensure directory exists
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0755, true);
+        }
+        // Move file to target directory
+        $documentFile->move($destinationPath, $documentPath);
+        // Set the relative path for saving
+        $documentPath = 'uploads/documents/' . $documentPath;
     }
 
-    // Move file to target directory
-    $documentFile->move($destinationPath, $documentPath);
+    // Save project data into the database
+    $project = Project::create([
+        'employee_id' => $request->employee_id,
+        'company_name' => $request->company_name,
+        'service_required' => $request->service_required,
+        'start_date' => $request->start_date,
+        'days' => $request->days,
+        'status' => $request->status,
+        'person_name' => $request->person_name,
+        'service_type' => $request->service_type,
+        'city'=>$request->city,
+        'email' => $request->email,
+        'ministry' => $request->ministry,
+        'country'=>$request->country,
+        'person_contact' => $request->person_contact,
+        'business_type'=>$request->business_type,
+        'commertial_register'=>$request->commertial_register,
+        'document' => $documentPath, // Save relative path or null if no file
+    ]);
 
-    // Set the relative path for saving
-    $documentPath = 'uploads/documents/' . $documentPath;
-}
-
-// Save project data into the database
-Project::create([
-    'employee_id' => $request->employee_id,
-    'company_name' => $request->company_name,
-    'service_required' => $request->service_required,
-    'start_date' => $request->start_date,
-    'days' => $request->days,
-    'status' => $request->status,
-    'person_name' => $request->person_name,
-    'service_type' => $request->service_type,
-    'city'=>$request->city,
-    'email' => $request->email,
-    'ministry' => $request->ministry,
-    'country'=>$request->country,
-    'person_contact' => $request->person_contact,
-    'business_type'=>$request->business_type,
-    'commertial_register'=>$request->commertial_register,
-    'document' => $documentPath, // Save relative path or null if no file
-]);
-
-
+         // Send email to admin
+         $user = User::where('role','admin')->first();
+          Mail::to($user->email)->send(new ProjectCreatedNotification($project->toArray()));
         return redirect()->route('employee.dashboard')->with('success', 'Project created successfully.');
     }
 

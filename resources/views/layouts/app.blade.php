@@ -21,12 +21,13 @@
 </head>
 <style>
     .logo {
-    width: 150px; /* Adjust width as needed */
-    height: auto; /* Maintain aspect ratio */
-    max-height: 150px; /* Limit maximum height */
+    /* width: 180px;
+    height: 170px;  */
+    max-height: 250px;
+    max-width:240px;
     object-fit: contain;
     position: absolute;
-    margin-top: -70px;
+    margin-top: -99px;
     color: white
 }
 

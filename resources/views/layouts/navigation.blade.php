@@ -11,8 +11,12 @@
                           <span style="color:white"> {{ __('لوحة التحكم') }}</span>
 
                         </x-nav-link>
-                        <x-nav-link :href="route('admin.add.employee')" :active="request()->routeIs('admin.add.employee')">
+                        {{-- <x-nav-link :href="route('admin.add.employee')" :active="request()->routeIs('admin.add.employee')">
                             <span style="color:white"> {{ __('إضافة موظف') }}</span>
+                        </x-nav-link> --}}
+
+                        <x-nav-link :href="route('admin.users.lists')" :active="request()->routeIs('admin.users.lists')">
+                            <span style="color:white"> {{ __('messages.user_list') }}</span>
                         </x-nav-link>
                     @else
                         <x-nav-link :href="route('employee.dashboard')" :active="request()->routeIs('employee.dashboard')">
