@@ -27,13 +27,77 @@
     max-width:240px;
     object-fit: contain;
     position: absolute;
-    margin-top: -99px;
+    margin-top: -119px;
     color: white
 }
+.back{
+        background-image: url('{{ asset('admin/ff1.jpg') }}');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
 
+        .table-blue th {
+            background-color: #003366 !important;
+            color: white !important;
+        }
+        .table-blue td {
+
+            color: black !important;
+        }
+        .table-blue th {
+
+color: black !important;
+}
+        .table-blue tbody tr:nth-child(even) {
+            background-color: #E6F7FF !important;
+        }
+        .table-blue tbody tr:nth-child(odd) {
+            background-color: #CCEBFF !important;
+        }
+        .table-blue td, .table-blue th {
+            border-color: #003366 !important;
+        }
+        .btn-primary {
+            background-color: #0066CC !important;
+            border-color: #0066CC !important;
+        }
+        .btn-primary:hover {
+            background-color: #0052A3 !important;
+            border-color: #0052A3 !important;
+        }
+        .btn-warning {
+            background-color: #FFCC00 !important;
+            border-color: #FFCC00 !important;
+        }
+        .btn-danger {
+            background-color: #FF3300 !important;
+            border-color: #FF3300 !important;
+        }
+        .rtl-container {
+    direction: rtl;
+    text-align: right;
+}
+.table>:not(caption)>*>*:nth-child(even),
+.table tbody tr:nth-child(even) {
+    background-color: #F0F8FF !important; /* Alice Blue */
+    color: #003366; /* Navy Text */
+}
+
+.table>:not(caption)>*>*:nth-child(odd),
+.table tbody tr:nth-child(odd) {
+    background-color: #DDEEFF !important; /* Light Steel Blue */
+    color: #003366; /* Navy Text */
+}
+
+.table>:not(caption)>*>* th {
+    background-color: #003366 !important; /* Navy */
+    color: #FFFFFF !important; /* White Text */
+    border: 1px solid #003366 !important;
+
+}
 </style>
-<body class="font-sans antialiased" >
-    <div class="min-h-screen bg-gray-100" style="background-color:#F5F5DC">
+<body class="font-sans antialiased " >
+    <div class="min-h-screen bg-gray-100 back" >
         @include('layouts.navigation')
 
         <!-- Centered Logo -->
@@ -42,7 +106,7 @@
         <!-- Page Heading -->
         @isset($header)
             <header class="bg-black shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 ">
                     {{ $header }}
                 </div>
             </header>

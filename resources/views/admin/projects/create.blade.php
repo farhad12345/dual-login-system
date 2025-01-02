@@ -66,6 +66,7 @@
                                             </div>
                                         @enderror
                                     </div>
+
                                     <div class="col-md-6">
                                         <label for="service_type" class="form-label">نوع الخدمة</label>
                                         <select name="service_type" id="service_type" class="form-control  @error('service_type') is-invalid @enderror">
@@ -184,10 +185,14 @@
 
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <label for="document" class="form-label">المستند</label>
-                                        <input type="file" name="document" id="document"
-                                            class="form-control @error('document') is-invalid @enderror">
-                                        @error('document')
+                                        <label for="type" class="form-label">القسم</label>
+                                        <select name="type" id="type" class="form-control">
+                                            <option value="آمر تم لخدمات الأعمال">آمر تم لخدمات الأعمال </option>
+                                            <option value="وهج وطن العقارية"> وهج وطن العقارية</option>
+                                            <option value="منصة الجامعات">منصة الجامعات
+                                            </option>
+                                        </select>
+                                        @error('type')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
                                             </div>
@@ -198,6 +203,20 @@
                                         <input type="text" placeholder="أدخل نوع النشاط التجاري" name="business_type" id="business_type"
                                             class="form-control @error('business_type') is-invalid @enderror" required>
                                         @error('business_type')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+
+
+                                    <div class="col-md-6">
+                                        <label for="document" class="form-label">المستند</label>
+                                        <input type="file" name="document" id="document"
+                                            class="form-control @error('document') is-invalid @enderror">
+                                        @error('document')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
                                             </div>

@@ -1,6 +1,17 @@
 <x-guest-layout>
     <!-- حالة الجلسة -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
+
+    <div class="container">
+        <h3>
+            <a class="btn btn-info" href="javascript:history.back()">
+                &#8592; Back
+            </a>
+        </h3>
+        <br>
+    </div>
+
+
     <h4>موظف</h4>
     <form method="POST" action="{{ route('employee-login') }}">
         @csrf

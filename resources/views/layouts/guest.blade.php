@@ -14,12 +14,19 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <style>
+            .back{
+        background-image: url('{{ asset('admin/ff1.jpg') }}');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+        </style>
     </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="py-12 bg-blue-100 min-h-screen" style="background-color: blue">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white shadow-md sm:rounded-lg overflow-hidden">
-                    <div class="w-full p-6 mt-6 px-6 py-4 text-gray-900">
+    <body class="font-sans text-gray-900 antialiased ">
+        <div class="py-12 bg-blue-100 min-h-screen" >
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
+                <div class="bg-white shadow-md sm:rounded-lg overflow-hidden ">
+                    <div class="w-full p-6 mt-6 px-6 py-4 text-gray-900 ">
 
 
 
@@ -31,4 +38,5 @@
     </div>
 </div>
     </body>
+
 </html>

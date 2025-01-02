@@ -5,7 +5,7 @@
             text-align: right;
         }
     </style>
-    <div class="py-12 bg-blue-100 min-h-screen" style="background-color:#F5F5DC">
+    <div class="py-12 bg-blue-100 min-h-screen back" >
         <div class="flex justify-center my-6">
             <img src="{{ asset('logo1.png') }}" class="logo">
         </div>
@@ -18,7 +18,7 @@
 
         <!-- Card Container -->
         <div class="px-4">
-            <div class="shadow-md rounded-lg overflow-hidden" style="background-color: burlywood">
+            <div class="shadow-md rounded-lg overflow-hidden" style="background-color:white">
                 <div class="p-6">
                     <div class="rtl-container" style="direction: rtl;">
                         <table class="table table-striped table-hover align-middle">
@@ -64,7 +64,15 @@
 
                                         <td>{{ $project->person_name }}</td>
                                         <td>{{ $project->person_contact }}</td>
-                                        <td>{{ $project->service_type }}</td>
+                                        @php
+                                        $serviceTypes = [
+                                            'issuing_license' => 'إصدار رخصة',
+                                            'foreign_investment' => 'الاستثمار الأجنبي',
+                                            'issuing_trade_mark' => 'إصدار علامة تجارية',
+                                        ];
+                                    @endphp
+                                        <td>{{ $serviceTypes[$project->service_type] ?? 'غير محدد' }}</td>
+
                                         <td>{{ $project->city }}</td>
                                         <td>{{ $project->commertial_register }}</td>
                                         <td>

@@ -22,7 +22,8 @@ class User extends Authenticatable
         'email',
         'password',
         'last_login',
-        'last_logout'
+        'last_logout',
+        'status'
     ];
     public function projects()
     {

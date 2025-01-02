@@ -1,69 +1,13 @@
 <x-app-layout>
-    <style>
-        .table-blue th {
-            background-color: #003366 !important;
-            color: white !important;
-        }
-        .table-blue td {
+<style>
+    .back1{
+    background-image: url('ff1.jpg');
+    background-repeat: no-repeat;
+    background-size: cover
 
-            color: black !important;
-        }
-        .table-blue th {
-
-color: black !important;
 }
-        .table-blue tbody tr:nth-child(even) {
-            background-color: #E6F7FF !important;
-        }
-        .table-blue tbody tr:nth-child(odd) {
-            background-color: #CCEBFF !important;
-        }
-        .table-blue td, .table-blue th {
-            border-color: #003366 !important;
-        }
-        .btn-primary {
-            background-color: #0066CC !important;
-            border-color: #0066CC !important;
-        }
-        .btn-primary:hover {
-            background-color: #0052A3 !important;
-            border-color: #0052A3 !important;
-        }
-        .btn-warning {
-            background-color: #FFCC00 !important;
-            border-color: #FFCC00 !important;
-        }
-        .btn-danger {
-            background-color: #FF3300 !important;
-            border-color: #FF3300 !important;
-        }
-        .rtl-container {
-    direction: rtl;
-    text-align: right;
-}
-.table>:not(caption)>*>*:nth-child(even),
-.table tbody tr:nth-child(even) {
-    background-color: #F0F8FF !important; /* Alice Blue */
-    color: #003366; /* Navy Text */
-}
-
-.table>:not(caption)>*>*:nth-child(odd),
-.table tbody tr:nth-child(odd) {
-    background-color: #DDEEFF !important; /* Light Steel Blue */
-    color: #003366; /* Navy Text */
-}
-
-.table>:not(caption)>*>* th {
-    background-color: #003366 !important; /* Navy */
-    color: #FFFFFF !important; /* White Text */
-    border: 1px solid #003366 !important;
-}
-
-
-
-
-    </style>
-    <div class="py-12 min-h-screen" style="background-color:#F0F8FF;">
+</style>
+    <div class="py-12 min-h-screen back1">
         <div class="flex justify-center my-6">
             <img src="{{ asset('logo1.png') }}" class="logo">
         </div>
@@ -71,7 +15,7 @@ color: black !important;
             <a href="{{ route('admin.add.employee') }}" class="btn btn-primary">
                 <i class="fas fa-plus"></i> {{ __('messages.add_user') }}             </a>
         </div>
-        <div class="px-4">
+        <div class="px-4 ">
             <div class="bg-light shadow-md rounded-lg overflow-hidden">
                 <div class="p-6">
                     <div class="rtl-container" style="direction: rtl;">
@@ -83,6 +27,8 @@ color: black !important;
                                     <th>تاريخ الإنشاء</th>
                                     <th>آخر تسجيل دخول</th>
                                     <th>آخر تسجيل خروج</th>
+                                    <th>حالة</th>
+                                    <th>تغيير الحالة</th>
                                     <th>الإجراءات</th>
                                 </tr>
                             </thead>
@@ -94,6 +40,26 @@ color: black !important;
                                     <td>{{ \Carbon\Carbon::parse($user->created_at)->format('Y-m-d H:i:s') }}</td>
                                     <td>{{ \Carbon\Carbon::parse($user->last_login)->format('Y-m-d H:i:s') }}</td>
                                     <td>{{ \Carbon\Carbon::parse($user->last_logout)->format('Y-m-d H:i:s') }}</td>
+                                    <td>
+                                        @if ($user->status === 'pending')
+                                            <a href="{{ route('admin.user.status', $user->id) }}" class="btn btn-warning btn-sm">قيد الانتظار</a>
+                                        @elseif ($user->status === 'accepted')
+                                            <a href="#" class="btn btn-success btn-sm">مقبول</a>
+                                        @elseif ($user->status === 'rejected')
+                                            <a href="{{ route('admin.user.status', $user->id) }}" class="btn btn-danger btn-sm">مرفوض</a>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <form action="{{ route('admin.user.status', $user->id) }}" method="POST">
+                                            @csrf
+                                            <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                                                <option value="pending" {{ $user->status === 'pending' ? 'selected' : '' }}>قيد الانتظار</option>
+                                                <option value="accepted" {{ $user->status === 'accepted' ? 'selected' : '' }}>مقبول</option>
+                                                <option value="rejected" {{ $user->status === 'rejected' ? 'selected' : '' }}>مرفوض</option>
+                                            </select>
+                                        </form>
+                                    </td>
+
                                     <td>
                                         <a href="{{ route('admin.users.destroy', $user->id) }}"
                                            onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا المستخدم؟')"

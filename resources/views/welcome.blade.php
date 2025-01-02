@@ -33,14 +33,21 @@
             margin-bottom: 10px;
         }
     </style>
+        <style>
+            .back{
+        background-image: url('{{ asset('admin/ff1.jpg') }}');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+        </style>
 </head>
 
-<body>
-    <div class="py-12 bg-blue-100 min-h-screen" style="background-color: blue">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+<body class="back">
+    <div class="py-12 bg-blue-100 min-h-screen">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
             <div class="bg-white shadow-md sm:rounded-lg overflow-hidden">
-                <div class="w-full p-6 mt-6 px-6 py-4 text-gray-900">
-    <div class="welcome-container">
+
+    <div class="welcome-container ">
         <h1>مرحبًا بك في نظام تسجيل الدخول المزدوج</h1>
            {{-- {{ Hash::make('jumana@123') }} --}}
         <div>
@@ -53,6 +60,6 @@
             <a href="{{ route('register') }}" class="btn btn-success">التسجيل</a>
         </div>
     </div>
-</div>  </div>  </div>
+</div>  </div>
 
 </html>

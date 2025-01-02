@@ -1,5 +1,13 @@
 <x-app-layout>
-    <div class="container mt-5">
+    <style>
+        .back1{
+        background-image: url('ff1.jpg');
+        background-repeat: no-repeat;
+        background-size: cover
+
+    }
+    </style>
+    <div class="container mt-5 back1">
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
                 <h4 class="mb-0 text-center">تعديل المشروع</h4>

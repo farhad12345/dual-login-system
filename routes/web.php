@@ -50,6 +50,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function ()
     Route::get('admin/users', action: [DashboardController::class, 'UsersList'])->name('admin.users.lists');
 
     Route::get('admin/users/destroy/{id}', action: [DashboardController::class, 'UserDelete'])->name('admin.users.destroy');
+    Route::post('/admin/user/status/edit/{id}', [DashboardController::class, 'UpdateUserStatus'])->name('admin.user.status');
 
 
     Route::get('/profile/edit', [DashboardController::class, 'adminDashboard'])->name('profile.edit');

@@ -60,7 +60,14 @@ color: black !important;
 }
 
     </style>
-   <div class="py-12 min-h-screen" style="background-color:#F0F8FF;">
+    <style>
+    .back1 {
+        background-image: url('{{ asset('admin/ff1.jpg') }}');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    </style>
+   <div class="py-12 min-h-screen back1" >
     <div class="flex justify-center my-6">
         <img src="{{ asset('logo1.png') }}" class="logo">
     </div>
@@ -103,7 +110,14 @@ color: black !important;
                                         {{-- <td>{{ $project->completion_date }}</td> --}}
                                         <td>{{ $project->person_name }}</td>
                                         <td>{{ $project->person_contact }}</td>
-                                        <td>{{ $project->service_type }}</td>
+                                        @php
+                                        $serviceTypes = [
+                                            'issuing_license' => 'إصدار رخصة',
+                                            'foreign_investment' => 'الاستثمار الأجنبي',
+                                            'issuing_trade_mark' => 'إصدار علامة تجارية',
+                                        ];
+                                    @endphp
+                                        <td>{{ $serviceTypes[$project->service_type] ?? 'غير محدد' }}</td>
                                         <td>{{ $project->city }}</td>
                                         <td>{{ $project->commertial_register }}</td>
                                         <td>
@@ -137,6 +151,9 @@ color: black !important;
                                 @endforeach
                             </tbody>
                         </table>
+                        <div class="mt-4">
+                            {{ $projects->links('vendor.pagination.bootstrap-5') }}
+                        </div>
                     </div>
                 </div>
 

@@ -45,7 +45,13 @@ class DashboardController extends Controller
 
     public function employeeDashboard()
     {
+
         $employe_id = Auth()->user()->id;
+        $user = User::findOrFail($employe_id);
+        if ($user->status !== 'accepted') {
+            // Redirect to login page with an error message
+            return redirect()->route('employee-login')->with('error', 'يرجى الانتظار حتى يتم الموافقة على حسابك من قبل المسؤول.');
+        }
         $projects = Project::where('employee_id', $employe_id)->with('employee')
         ->orderBy('id', 'desc')
         ->paginate(10);
@@ -54,7 +60,9 @@ class DashboardController extends Controller
 
     public function ViewProjects($id)
     {
-        $projects = Project::where('employee_id', $id)->with('employee')->get();
+        $projects = Project::where('employee_id', $id)->with('employee')
+        ->orderBy('id', 'desc')
+        ->paginate(8);
         return view('admin.projects.details',compact('projects'));
     }
     public function destroy($id)
@@ -75,7 +83,7 @@ class DashboardController extends Controller
         $project = User::findOrFail($id);
         $project->delete();
 
-        return redirect()->route('dashboard')->with('success', 'User deleted successfully.');
+        return redirect()->route('dashboard')->with('success', 'تم حذف المستخدم بنجاح.');
     }
     //admin project Create
     public function ProjectCreate()
@@ -131,7 +139,7 @@ class DashboardController extends Controller
         ]);
         $user = User::where('role','admin')->first();
         Mail::to($user->email)->send(new ProjectCreatedNotification($project->toArray()));
-        return redirect()->route('dashboard')->with('success', 'Project created successfully.');
+        return redirect()->route('dashboard')->with('success', 'تم إنشاء المشروع بنجاح.');
     }
 
     public function ProjectUpdate(Request $request, $id)
@@ -193,13 +201,13 @@ class DashboardController extends Controller
                 'commertial_register'=>$request->commertial_register,
         ]);
 
-        return redirect()->route('dashboard')->with('success', 'Project updated successfully.');
+        return redirect()->route('dashboard')->with('success', 'تم تحديث المشروع بنجاح.');
 
     } catch (\Exception $e) {
         // Log the exception for debugging
         \Log::error('Error during project update: ' . $e->getMessage());
 
-        return redirect()->route('dashboard')->with('error', 'Failed to update the project.');
+        return redirect()->route('dashboard')->with('error', 'فشل في تحديث المشروع.');
     }
 }
     public function ProjectEdit($id)
@@ -208,6 +216,21 @@ class DashboardController extends Controller
         $users = User::where('role', 'employee','users')->get();
         return view('admin.projects.edit', compact('project','users'));
     }
+    public function UpdateUserStatus(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            'status' => 'required|in:pending,accepted,rejected',
+        ]);
+
+        $user->update(['status' => $request->status]);
+
+        return redirect()->back()->with('success', 'تم تحديث حالة المستخدم بنجاح.');
+    }
+
+
+
     public function CompanyDetails($id)
     {
         $projects = Project::where('employee_id', $id)->with('employee')->get();
@@ -238,10 +261,11 @@ class DashboardController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role'=>'employee'
+            'role'=>'employee',
+            'status'=>'accepted'
         ]);
 
-        return redirect()->route('dashboard')->with('success', 'Project updated successfully.');
+        return redirect()->route('dashboard')->with('success', 'تم تحديث المشروع بنجاح.');
 
     }
 }

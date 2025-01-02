@@ -39,13 +39,14 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'status'=>'pending'
         ]);
 
         event(new Registered($user));
 
-        Auth::login($user);
-        $user = $request->user(); // Get the authenticated user
-        $user->update(['last_login' => now()]);
-        return redirect(route('employee.dashboard', absolute: false));
+        // Auth::login($user);
+        // $user = $request->user(); // Get the authenticated user
+        // $user->update(['last_login' => now()]);
+        return redirect(route('register', absolute: false))->with('status', 'تم تسجيلك بنجاح. يرجى الانتظار حتى يتم الموافقة على حسابك من قبل المسؤول.');;
     }
 }

@@ -1,4 +1,26 @@
 <x-guest-layout>
+    <style>
+        .back{
+    background-image: url('{{ asset('admin/ff1.jpg') }}');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+    </style>
+   <div class="container">
+    <h3>
+        <a class="btn btn-info" href="javascript:history.back()">
+            &#8592; Back
+        </a>
+    </h3>
+    <br>
+</div>
+
+      <x-auth-session-status class="mb-4" :status="session('status')" />
+    {{-- <body class="">
+  <div class="container mt-5 "  >
+    <div class="card shadow-sm" >
+
+        <div class="card-body"> --}}
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
@@ -49,4 +71,8 @@
             </x-primary-button>
         </div>
     </form>
+    {{-- </div>
+</div>
+</div>
+    </body> --}}
 </x-guest-layout>

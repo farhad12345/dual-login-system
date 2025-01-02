@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\EmployeRequest;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -22,15 +24,29 @@ class AuthenticatedSessionController extends Controller
     {
         return view('auth.employee-Login');
     }
-    public function EmployeeStore(LoginRequest $request): RedirectResponse
+    public function EmployeeStore(EmployeRequest $request)
     {
+        // Check if the user exists with the given email and password before authenticating
+        $user = User::where('email', $request->email)->first();
+
+        // If user doesn't exist or the status is not 'accepted', show an error
+        if (!$user || $user->status !== 'accepted') {
+            return redirect()->route('employee-login')->with('status', 'يرجى الانتظار حتى يتم الموافقة على حسابك من قبل المسؤول.');
+        }
+
+        // Authenticate the user
         $request->authenticate();
-        $user = $request->user(); // Get the authenticated user
-        $user->update(['last_login' => now()]);
+
+        // Regenerate the session after successful authentication
         $request->session()->regenerate();
 
+        // Update the last login time
+        $user->update(['last_login' => now()]);
+
+        // Redirect to the intended route or employee dashboard
         return redirect()->intended(route('employee.dashboard', absolute: false));
     }
+
     /**
      * Handle an incoming authentication request.
      */
