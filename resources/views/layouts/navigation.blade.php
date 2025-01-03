@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-black border-b border-gray-100">
+<nav x-data="{ open: false }" class="bg-black border-b border-gray-100" >
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -8,7 +8,7 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     @if (Auth()->user()->role == 'admin')
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                          <span style="color:white"> {{ __('لوحة التحكم') }}</span>
+                          <span style="color:white"><i class="fas fa-tachometer-alt me-2" style="color: white"></i> {{ __('لوحة التحكم') }}</span>
 
                         </x-nav-link>
                         {{-- <x-nav-link :href="route('admin.add.employee')" :active="request()->routeIs('admin.add.employee')">
@@ -16,11 +16,13 @@
                         </x-nav-link> --}}
 
                         <x-nav-link :href="route('admin.users.lists')" :active="request()->routeIs('admin.users.lists')">
-                            <span style="color:white"> {{ __('messages.user_list') }}</span>
+                            <i class="fas fa-users me-2" style="color: white;"></i> <!-- User icon with white color -->
+                            <span style="color: white;">{{ __('messages.user_list') }}</span>
                         </x-nav-link>
+
                     @else
                         <x-nav-link :href="route('employee.dashboard')" :active="request()->routeIs('employee.dashboard')">
-                            <span style="color:white"> {{ __('لوحة التحكم') }}</span>
+                            <span style="color:white"><i class="fas fa-tachometer-alt me-2" style="color: white"></i> {{ __('لوحة التحكم') }}</span>
                         </x-nav-link>
                     @endif
 
@@ -33,7 +35,7 @@
                     <x-slot name="trigger">
                         <button
                             class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
+                            <div> <i class="fas fa-user" style="color: black;"></i>&nbsp;  {{ Auth::user()->name }}</div>
 
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -52,7 +54,11 @@
                             <x-dropdown-link :href="route('logout')"
                                 onclick="event.preventDefault();
                                                 this.closest('form').submit();">
+                            <span style="color: black;">
+                                <i class="fas fa-sign-out-alt me-2" style="color: black;"></i> <!-- Logout icon -->
                                 {{ __('Log Out') }}
+                            </span>
+
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -79,8 +85,11 @@
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                <i class="fas fa-tachometer-alt me-2" style="color: white"></i> <!-- Adds margin to the right -->
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
+
         </div>
 
         <!-- Responsive Settings Options -->

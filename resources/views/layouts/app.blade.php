@@ -10,6 +10,8 @@
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -21,83 +23,104 @@
 </head>
 <style>
     .logo {
-    /* width: 180px;
+        /* width: 180px;
     height: 170px;  */
-    max-height: 250px;
-    max-width:240px;
-    object-fit: contain;
-    position: absolute;
-    margin-top: -119px;
-    color: white
-}
-.back{
+        max-height: 250px;
+        max-width: 240px;
+        object-fit: contain;
+        position: absolute;
+        margin-top: -119px;
+        color: white
+    }
+
+    .back {
         background-image: url('{{ asset('admin/ff1.jpg') }}');
         background-repeat: no-repeat;
         background-size: cover;
     }
 
-        .table-blue th {
-            background-color: #003366 !important;
-            color: white !important;
-        }
-        .table-blue td {
+    .table-blue th {
+        background-color: #003366 !important;
+        color: white !important;
+    }
 
-            color: black !important;
-        }
-        .table-blue th {
+    .table-blue td {
 
-color: black !important;
-}
-        .table-blue tbody tr:nth-child(even) {
-            background-color: #E6F7FF !important;
-        }
-        .table-blue tbody tr:nth-child(odd) {
-            background-color: #CCEBFF !important;
-        }
-        .table-blue td, .table-blue th {
-            border-color: #003366 !important;
-        }
-        .btn-primary {
-            background-color: #0066CC !important;
-            border-color: #0066CC !important;
-        }
-        .btn-primary:hover {
-            background-color: #0052A3 !important;
-            border-color: #0052A3 !important;
-        }
-        .btn-warning {
-            background-color: #FFCC00 !important;
-            border-color: #FFCC00 !important;
-        }
-        .btn-danger {
-            background-color: #FF3300 !important;
-            border-color: #FF3300 !important;
-        }
-        .rtl-container {
-    direction: rtl;
-    text-align: right;
-}
-.table>:not(caption)>*>*:nth-child(even),
-.table tbody tr:nth-child(even) {
-    background-color: #F0F8FF !important; /* Alice Blue */
-    color: #003366; /* Navy Text */
-}
+        color: black !important;
+    }
 
-.table>:not(caption)>*>*:nth-child(odd),
-.table tbody tr:nth-child(odd) {
-    background-color: #DDEEFF !important; /* Light Steel Blue */
-    color: #003366; /* Navy Text */
-}
+    .table-blue th {
 
-.table>:not(caption)>*>* th {
-    background-color: #003366 !important; /* Navy */
-    color: #FFFFFF !important; /* White Text */
-    border: 1px solid #003366 !important;
+        color: black !important;
+    }
 
-}
+    .table-blue tbody tr:nth-child(even) {
+        background-color: #E6F7FF !important;
+    }
+
+    .table-blue tbody tr:nth-child(odd) {
+        background-color: #CCEBFF !important;
+    }
+
+    .table-blue td,
+    .table-blue th {
+        border-color: #003366 !important;
+    }
+
+    .btn-primary {
+        background-color: #0066CC !important;
+        border-color: #0066CC !important;
+    }
+
+    .btn-primary:hover {
+        background-color: #0052A3 !important;
+        border-color: #0052A3 !important;
+    }
+
+    .btn-warning {
+        background-color: #FFCC00 !important;
+        border-color: #FFCC00 !important;
+    }
+
+    .btn-danger {
+        background-color: #FF3300 !important;
+        border-color: #FF3300 !important;
+    }
+
+    .rtl-container {
+        direction: rtl;
+        text-align: right;
+    }
+
+    .table>:not(caption)>*>*:nth-child(even),
+    .table tbody tr:nth-child(even) {
+        background-color: #F0F8FF !important;
+        /* Alice Blue */
+        color: #003366;
+        /* Navy Text */
+    }
+
+    .table>:not(caption)>*>*:nth-child(odd),
+    .table tbody tr:nth-child(odd) {
+        background-color: #DDEEFF !important;
+        /* Light Steel Blue */
+        color: #003366;
+        /* Navy Text */
+    }
+
+    .table>:not(caption)>*>* th {
+        background-color: #003366 !important;
+        /* Navy */
+        color: #FFFFFF !important;
+        /* White Text */
+        border: 1px solid #003366 !important;
+
+    }
+
 </style>
-<body class="font-sans antialiased " >
-    <div class="min-h-screen bg-gray-100 back" >
+
+<body class="font-sans antialiased ">
+    <div class="min-h-screen bg-gray-100 back">
         @include('layouts.navigation')
 
         <!-- Centered Logo -->
