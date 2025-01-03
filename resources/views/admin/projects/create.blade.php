@@ -187,10 +187,9 @@
                                     <div class="col-md-6">
                                         <label for="type" class="form-label">القسم</label>
                                         <select name="type" id="type" class="form-control">
-                                            <option value="آمر تم لخدمات الأعمال">آمر تم لخدمات الأعمال </option>
-                                            <option value="وهج وطن العقارية"> وهج وطن العقارية</option>
-                                            <option value="منصة الجامعات">منصة الجامعات
-                                            </option>
+                                            <option value="amirtam_khedmat">آمر تم لخدمات الأعمال </option>
+                                            <option value="wahaj_watan"> وهج وطن العقارية</option>
+                                            <option value="alhojamat">منصة الجامعات</option>
                                         </select>
                                         @error('type')
                                             <div class="invalid-feedback">

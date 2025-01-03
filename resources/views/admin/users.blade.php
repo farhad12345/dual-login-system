@@ -42,11 +42,11 @@
                                     <td>{{ \Carbon\Carbon::parse($user->last_logout)->format('Y-m-d H:i:s') }}</td>
                                     <td>
                                         @if ($user->status === 'pending')
-                                            <a href="{{ route('admin.user.status', $user->id) }}" class="btn btn-warning btn-sm">قيد الانتظار</a>
+                                            <a href="#" class="btn btn-warning btn-sm">قيد الانتظار</a>
                                         @elseif ($user->status === 'accepted')
                                             <a href="#" class="btn btn-success btn-sm">مقبول</a>
                                         @elseif ($user->status === 'rejected')
-                                            <a href="{{ route('admin.user.status', $user->id) }}" class="btn btn-danger btn-sm">مرفوض</a>
+                                            <a href="#" class="btn btn-danger btn-sm">مرفوض</a>
                                         @endif
                                     </td>
                                     <td>

@@ -69,6 +69,7 @@ class ProjectController extends Controller
         'country'=>$request->country,
         'person_contact' => $request->person_contact,
         'business_type'=>$request->business_type,
+        'type'=>$request->type,
         'commertial_register'=>$request->commertial_register,
         'document' => $documentPath, // Save relative path or null if no file
     ]);
@@ -150,6 +151,7 @@ class ProjectController extends Controller
                 'country'=>$request->country,
                 'ministry' => $request->ministry,
                 'business_type'=>$request->business_type,
+                'type'=>$request->type,
                 'commertial_register'=>$request->commertial_register,
             ]);
 

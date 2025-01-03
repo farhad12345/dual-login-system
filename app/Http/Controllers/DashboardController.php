@@ -133,6 +133,7 @@ class DashboardController extends Controller
             'ministry' => $request->ministry,
             'person_contact' => $request->person_contact,
             'business_type'=>$request->business_type,
+            'type'=>$request->type,
             'country'=>$request->country,
             'commertial_register'=>$request->commertial_register,
             'document' => $documentPath, // Save relative path or null if no file
@@ -198,6 +199,7 @@ class DashboardController extends Controller
                 'ministry' => $request->ministry,
                 'country'=>$request->country,
                 'business_type'=>$request->business_type,
+                'type'=>$request->type,
                 'commertial_register'=>$request->commertial_register,
         ]);
 

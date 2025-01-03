@@ -23,6 +23,7 @@ class Project extends Model
         'email',
         'ministry',
         'business_type',
+        'type',
         'country'
     ];
     public function employee()

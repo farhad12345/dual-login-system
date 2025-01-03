@@ -5,7 +5,7 @@
             <img src="{{ asset('logo1.png') }}" class="logo">
         </div>
         <div class="d-flex justify-content-end mb-3 px-4">
-            <a href="{{ route('admin.projects.create') }}" class="btn btn-primary">
+            <a href="{{ route('admin.projects.create') }}" target="_blank" class="btn btn-primary">
                 <i class="fas fa-plus"></i> إضافة مشروع
             </a>
         </div>
@@ -18,27 +18,42 @@
                                 <tr>
                                     <th>القسم</th>
                                     <th>اسم الموظف</th>
-
                                     <th>اسم المنشأة</th>
                                     <th>الخدمة المطلوبة</th>
-                                    <th>تاريخ البدء</th>
+                                    {{-- <th>تاريخ البدء</th> --}}
                                     <th>عدد الأيام لإكمال</th>
                                     <th> الجهة المقدمة للخدمة</th>
                                     <th>آخر تسجيل دخول</th>
+                                    <th>حالة الوقت</th>
                                     <th>الحالة</th>
                                     {{-- <th>المستند</th> --}}
-
                                     <th>التقرير </th>
                                     <th>الإجراءات</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($projects as $project)
+                                @php
+                                $serviceTypes = [
+                                    'issuing_license' => 'إصدار رخصة',
+                                    'foreign_investment' => 'الاستثمار الأجنبي',
+                                    'issuing_trade_mark' => 'إصدار علامة تجارية',
+                                ];
+                                $types=[
+                                    'amirtam_khedmat' => 'آمر تم لخدمات الأعمال',
+                                    'wahaj_watan' => 'وهج وطن العقارية',
+                                    'alhojamat' => 'منصة الجامعات',
+                            ];
+                            $endDate = \Carbon\Carbon::parse($project->start_date)->addDays((int) $project->days);
+                           $isOverdue = \Carbon\Carbon::now()->gt($endDate);
+
+                            @endphp
                                 <tr>
-                                    <td></td>
+                                    <td>{{ $types[$project->type] ?? 'غير محدد' }}</td>
+
                                     <td>
                                         @if ($project->employee)
-                                        <a href="{{ url('admin/view-projects/' . $project->employee->id) }}">
+                                        <a target="_blank" href="{{ url('admin/view-projects/' . $project->employee->id) }}">
                                             {{ $project->employee->name }}
                                         </a>
                                         @else
@@ -53,6 +68,7 @@
                                         <div id="details-{{ $project->id }}" class="details hidden">
                                             <div><strong>اسم الشركة:</strong> {{ $project->company_name }}</div>
                                             <div><strong>السجل التجاري:</strong> {{ $project->commertial_register }}</div>
+                                            <div><strong> تاريخ البدء:</strong> {{ $project->start_date }}</div>
                                             <div><strong>البريد الإلكتروني:</strong> <a href="mailto:{{ $project->email }}">{{ $project->email }}</a></div>
                                             <div><strong>البلد:</strong> {{ $project->country }}</div>
                                             <div><strong>مدينة:</strong> {{ $project->city }}</div>
@@ -65,25 +81,26 @@
                                             </div>
                                         </div>
                                     </td>
-
-
                                     <td>{{ $project->service_required }}</td>
-                                    <td>{{ $project->start_date }}</td>
+                                    {{-- <td>{{ $project->start_date }}</td> --}}
                                     <td>{{ $project->days }} يوم</td>
-                                    @php
-                                    $serviceTypes = [
-                                        'issuing_license' => 'إصدار رخصة',
-                                        'foreign_investment' => 'الاستثمار الأجنبي',
-                                        'issuing_trade_mark' => 'إصدار علامة تجارية',
-                                    ];
-                                @endphp
                                     <td>{{ $serviceTypes[$project->service_type] ?? 'غير محدد' }}</td>
-
                                     <td>
                                         @if ($project->employee && $project->employee->last_login)
                                             {{ \Carbon\Carbon::parse($project->employee->last_login)->format('Y-m-d H:i:s') }}
                                         @else
                                             لم يتم تسجيل الدخول
+                                        @endif
+                                    </td>
+                                    <td> <!-- New Column -->
+                                        @if ($isOverdue)
+                                            <span class="badge bg-danger">انتهى الوقت</span>
+                                            <br>
+                                            <small>انتهى في: {{ $endDate->format('Y-m-d') }}</small>
+                                        @else
+                                            <span class="badge bg-success">في الوقت المحدد</span>
+                                            <br>
+                                            <small>ينتهي في: {{ $endDate->format('Y-m-d') }}</small>
                                         @endif
                                     </td>
                                     <td>
@@ -99,9 +116,8 @@
                                             تنزيل
                                         </a>
                                     </td> --}}
-                                    <td> <a href="{{ route('admin.projects.edit', $project->id) }}" class="btn btn-warning btn-sm">التعديل</a></td>
+                                    <td> <a target="_blank" href="{{ route('admin.projects.edit', $project->id) }}" class="btn btn-warning btn-sm">التعديل</a></td>
                                     <td>
-
                                         <a href="{{ route('admin.projects.destroy', $project->id) }}"
                                            onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا المشروع؟')"
                                            class="btn btn-danger btn-sm">
