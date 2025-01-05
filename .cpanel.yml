@@ -11,6 +11,6 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
-        server: 162.215.208.131
-        username: amertmco
-        password: Saleh@2025
+        server: 38.91.101.117
+        username: farhanenterprise
+        password: ktLY?$i&K8u&
