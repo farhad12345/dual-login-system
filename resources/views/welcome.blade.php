@@ -41,7 +41,7 @@
     }
         </style>
 </head>
-
+  {{-- this is comment --}}
 <body class="back">
     <div class="py-12 bg-blue-100 min-h-screen">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
