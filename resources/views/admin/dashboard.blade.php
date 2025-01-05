@@ -7,7 +7,6 @@
         word-wrap: break-word; /* Allows long text to break into multiple lines */
         overflow-wrap: break-word; /* For better handling of long words */
     }
-
     /* Adjust column widths to prevent text overflow */
     .table th, .table td {
         text-align: center; /* Center align the text */
@@ -15,7 +14,6 @@
         padding: 10px; /* Add some padding for better spacing */
         white-space: normal; /* Allow wrapping of text in cells */
     }
-
     /* Specific column widths for better text distribution */
     .table th:nth-child(1), .table td:nth-child(1) {
         width: 10%; /* Section */
@@ -70,42 +68,35 @@
         padding: 6px 12px; /* Adjust padding for the button */
         font-size: 14px; /* Ensure proper font size */
     }
-
     .btn i {
         margin-right: 5px; /* Space between the icon and the text */
     }
-
     /* If the text still overflows or breaks, we can limit the button width */
     .btn-danger {
         white-space: nowrap; /* Prevent text from wrapping */
     }
-
-
     /* Responsive table */
     @media (max-width: 768px) {
         .table th, .table td {
             font-size: 12px; /* Reduce font size on smaller screens */
             padding: 8px; /* Reduce padding on smaller screens */
         }
-
         /* Stack buttons vertically on small screens */
         .btn {
             flex-direction: column;
         }
     }
     /* Ensures the badge and date are displayed in a single line */
-td .badge {
-    display: inline-block;
-    vertical-align: middle; /* Aligns the badge and text vertically */
-}
-
-td .date-text {
-    display: inline-block;
-    margin-left: 5px; /* Adds space between the badge and the date */
-    vertical-align: middle; /* Aligns the text with the badge */
-    font-size: 0.875rem; /* Adjusts font size for better readability */
-}
-
+        td .badge {
+            display: inline-block;
+            vertical-align: middle; /* Aligns the badge and text vertically */
+        }
+        td .date-text {
+            display: inline-block;
+            margin-left: 5px; /* Adds space between the badge and the date */
+            vertical-align: middle; /* Aligns the text with the badge */
+            font-size: 0.875rem; /* Adjusts font size for better readability */
+        }
     </style>
         <div class="py-12 min-h-screen ">
             <div class="flex justify-center my-6">
@@ -216,7 +207,6 @@ td .date-text {
                                                     <small class="date-text">ينتهي في: {{ $endDate->format('Y-m-d') }}</small>
                                                 @endif
                                             </td>
-
                                             <td>
                                                 <span
                                                     class="badge {{ $project->status == 'started' ? 'bg-danger' : ($project->status == 'in_progress' ? 'bg-warning' : 'bg-success') }}">
@@ -234,7 +224,6 @@ td .date-text {
                                                     <i class="fas fa-edit me-2"></i>&nbsp;التعديل
                                                 </a>
                                             </td>
-
                                             <td>
                                                 <a href="{{ route('admin.projects.destroy', $project->id) }}"
                                                     onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا المشروع؟')"
@@ -242,7 +231,6 @@ td .date-text {
                                                     <i class="fas fa-trash-alt me-2"></i> &nbsp; حذف المشروع
                                                 </a>
                                             </td>
-
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -255,11 +243,6 @@ td .date-text {
                 </div>
             </div>
         </div>
-
-
-
-
-
         <script>
             function toggleDetails(id) {
                 const details = document.getElementById('details-' + id);

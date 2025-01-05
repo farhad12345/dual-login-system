@@ -2,16 +2,13 @@
     <div class="container mt-4">
         <h2>المشاريع</h2>
         <a href="{{ route('projects.create') }}" class="btn btn-primary mb-3">إضافة مشروع جديد</a>
-
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
-
         <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>#12</th>
-
                     <th>اسم الشركة</th>
                     <th>الخدمة المطلوبة</th>
                     <th>تاريخ البدء</th>
@@ -26,7 +23,6 @@
                 @foreach ($projects as $project)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-
                         <td>{{ $project->company_name }}</td>
                         <td>{{ $project->service_required }}</td>
                         <td>{{ $project->start_date }}</td>
