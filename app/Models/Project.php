@@ -24,7 +24,8 @@ class Project extends Model
         'ministry',
         'business_type',
         'type',
-        'country'
+        'country',
+        'reason'
     ];
     public function employee()
     {

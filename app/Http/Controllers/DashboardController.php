@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Log;
+use Exception;
 use App\Models\User;
 use App\Models\Project;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use App\Models\MawayeedProject;
+use App\Models\WahajWatanDetail;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -40,8 +44,130 @@ class DashboardController extends Controller
         ->orderBy('projects.id', 'desc')
         ->paginate(10);
 
-            return view('admin.dashboard', compact('projects'));
+        $wahajprojects = WahajWatanDetail::with('employee')
+        ->select(
+            'wahaj_watan_details.*', // Select all columns from the wahaj_watan_details table
+            'wahaj_users.id as user_id', // Employee user ID
+            'wahaj_users.name as employee_name' // Employee name
+        )
+        ->leftJoin('wahaj_users', 'wahaj_watan_details.employee_id', '=', 'wahaj_users.id') // Join with wahaj_users
+        ->whereIn('wahaj_watan_details.id', function ($query) {
+            $query->select(DB::raw('MAX(id)'))
+                ->from('wahaj_watan_details') // Subquery for the latest record per employee
+                ->groupBy('employee_id');
+        })
+        ->orderBy('wahaj_watan_details.id', 'desc') // Order by latest record
+        ->paginate(10); // Paginate results
+          //al mawayeed projects query
+          $mawayeedprojects = MawayeedProject::with('employee')
+          ->select(
+              'mayeed_projects.*',
+              'mawayeed_users.id as user_id',
+              'mawayeed_users.name as employee_name'
+          )
+          ->leftJoin('mawayeed_users', 'mayeed_projects.employee_id', '=', 'mawayeed_users.id')
+          ->whereIn('mayeed_projects.id', function ($query) {
+              $query->select(DB::raw('MAX(id)'))
+                  ->from('mayeed_projects')
+                  ->groupBy('mayeed_projects.employee_id');
+          })
+          ->orderBy('mayeed_projects.date', 'desc') // Assuming 'date' is the column for sorting
+          ->paginate(10);
+
+
+
+    // Project Statuses
+    $totalEmployees = user::count();
+    $acceptedEmployees = User::where('status', 'accepted')->count();
+    $pendingEmployees = User::where('status', 'pending')->count();
+    $rejectedEmployees = User::where('status', 'rejected')->count();
+    $projectsStarted = Project::where('status', 'started')->count();
+    $projectsInProgress = Project::where('status', 'in_progress')->count();
+    $projectsCompleted = Project::where('status', 'completed')->count();
+    $projectsOverdue = Project::whereRaw('DATE_ADD(start_date, INTERVAL days DAY) < ?', [now()])
+    ->count();
+
+
+    // Last Login Activity
+    $lastLoginDates = User::selectRaw('DATE(last_login) as date')
+        ->groupBy('date')
+        ->orderBy('date', 'asc')
+        ->pluck('date');
+
+        $loginCounts = User::selectRaw('COUNT(*) as login_count, DATE(last_login) as date')
+        ->groupBy(DB::raw('DATE(last_login)'))
+        ->orderBy('date', 'asc')
+        ->pluck('login_count', 'date');
+
+
+            return view('admin.dashboard', compact('projects','wahajprojects','mawayeedprojects' ,'totalEmployees',
+            'projectsStarted',
+            'projectsInProgress',
+            'projectsCompleted',
+            'projectsOverdue',
+            'lastLoginDates',
+            'acceptedEmployees',
+            'pendingEmployees',
+            'rejectedEmployees',
+            'loginCounts'));
     }
+    public function adminDashboardListData(Request $request)
+    {
+        try {
+            $projectsQuery = Project::with('employee')
+            ->select('projects.*', 'users.id as user_id', 'users.name as employee_name')
+            ->leftJoin('users', 'projects.employee_id', '=', 'users.id')
+            ->whereIn('projects.id', function ($query) {
+                $query->select(DB::raw('MAX(id)'))
+                    ->from('projects')
+                    ->groupBy('projects.employee_id');
+            });
+
+        // Filter for employee name in the `users` table
+        if ($request->filled('filterName')) {
+            $projectsQuery->where('users.name', 'like', '%' . $request->filterName . '%');
+        }
+
+        // Filter for company name in the `projects` table
+        if ($request->filled('companyName')) {
+            $projectsQuery->where('projects.company_name', 'like', '%' . $request->companyName . '%');
+        }
+
+        // Filter for status in the `projects` table
+        if ($request->filled('statusFilter')) {
+            $projectsQuery->where('projects.status', $request->statusFilter);
+        }
+
+        $total = $projectsQuery->count();
+        $projects = $projectsQuery->orderBy('projects.id', 'desc')->paginate(10);
+
+            $view = View('admin.projects.projects_html', compact('projects'))->render();
+            return response()->json(['status' => 'success', 'html' => $view, 'total' => $total]);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'fail', 'msg' => $e->getMessage() . ':' . $e->getLine()]);
+        }
+    }
+    // public function index(Request $request)
+    // {
+    //     $query = Project::query();
+
+    //     if ($request->filled('employee_name')) {
+    //         $query->whereHas('employee', function ($q) use ($request) {
+    //             $q->where('name', 'like', '%' . $request->employee_name . '%');
+    //         });
+    //     }
+
+    //     if ($request->filled('company_name')) {
+    //         $query->where('company_name', 'like', '%' . $request->company_name . '%');
+    //     }
+
+    //     if ($request->filled('status')) {
+    //         $query->where('status', $request->status);
+    //     }
+
+    //     $projects = $query->paginate(10);
+    //     return view('admin.projects.index', compact('projects'));
+    // }
 
     public function employeeDashboard()
     {
@@ -70,8 +196,8 @@ class DashboardController extends Controller
         $project = Project::findOrFail($id);
 
         // Delete associated document
-        if ($project->document) {
-            Storage::delete($project->document);
+        if ($project->document && file_exists(public_path($project->document))) {
+            unlink(public_path($project->document)); // Remove the file from the public directory
         }
 
         $project->delete();
@@ -270,4 +396,42 @@ class DashboardController extends Controller
         return redirect()->route('dashboard')->with('success', 'تم تحديث المشروع بنجاح.');
 
     }
+    public function saveReason(Request $request)
+    {
+        // Validate the input
+        $request->validate([
+            'reason' => 'required|string|max:255',
+        ]);
+
+        // Find the project to update (you may need to pass a project ID as a hidden field in the form)
+        $project = Project::find($request->input('project_id')); // Adjust as needed
+        if (!$project) {
+            return back()->withErrors(['error' => 'Project not found']);
+        }
+
+        // Save the reason to the database
+        $project->reason = $request->input('reason');
+        $project->save();
+
+        // Fetch the associated employee
+        $employee = $project->employee;
+        if ($employee && $employee->email) {
+            $email = $project->email;
+            $reason = $project->reason;
+
+            // Log::info('Sending email to: ' . $email);
+
+            Mail::send('emails.reason_notification', ['employee' => $employee, 'reason' => $reason], function ($message) use ($email) {
+                $message->to( $email)
+            ->subject('إشعار: سبب الإجازة')
+            ->from('farhadkhanfarhad367@gmail.com', 'آمرتم');
+            });
+
+            // \Log::info('Email sent to: ' . $email);
+        }
+
+        // Redirect back with a success message
+        return back()->with('success', 'تم حفظ السبب بنجاح وإرسال إشعار إلى الموظف!');
+    }
+
 }

@@ -7,6 +7,7 @@
 
 }
 </style>
+@section('title', 'Users')
     <div class="py-12 min-h-screen back1">
         <div class="flex justify-center my-6">
             <img src="{{ asset('logo1.png') }}" class="logo">

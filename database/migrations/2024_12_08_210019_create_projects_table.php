@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string(column: 'ministry');
             $table->string('business_type');
             $table->string('type');
+            $table->string('reason');
             $table->string('country');
             $table->timestamps();
         });

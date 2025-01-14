@@ -1,4 +1,5 @@
 <x-app-layout>
+    @section('title', 'Details')
     <style>
         .table-blue th {
             background-color: #003366 !important;
@@ -10,8 +11,8 @@
         }
         .table-blue th {
 
-color: black !important;
-}
+        color: black !important;
+        }
         .table-blue tbody tr:nth-child(even) {
             background-color: #E6F7FF !important;
         }
@@ -40,33 +41,31 @@ color: black !important;
         .rtl-container {
     direction: rtl;
     text-align: right;
-}
-.table>:not(caption)>*>*:nth-child(even),
-.table tbody tr:nth-child(even) {
-    background-color: #F0F8FF !important; /* Alice Blue */
-    color: #003366; /* Navy Text */
-}
+        }
+        .table>:not(caption)>*>*:nth-child(even),
+        .table tbody tr:nth-child(even) {
+            background-color: #F0F8FF !important; /* Alice Blue */
+            color: #003366; /* Navy Text */
+        }
 
-.table>:not(caption)>*>*:nth-child(odd),
-.table tbody tr:nth-child(odd) {
-    background-color: #DDEEFF !important; /* Light Steel Blue */
-    color: #003366; /* Navy Text */
-}
+        .table>:not(caption)>*>*:nth-child(odd),
+        .table tbody tr:nth-child(odd) {
+            background-color: #DDEEFF !important; /* Light Steel Blue */
+            color: #003366; /* Navy Text */
+        }
 
-.table>:not(caption)>*>* th {
-    background-color: #003366 !important; /* Navy */
-    color: #FFFFFF !important; /* White Text */
-    border: 1px solid #003366 !important;
-}
-
-    </style>
-    <style>
-    .back1 {
+        .table>:not(caption)>*>* th {
+            background-color: #003366 !important; /* Navy */
+            color: #FFFFFF !important; /* White Text */
+            border: 1px solid #003366 !important;
+        }
+        .back1 {
         background-image: url('{{ asset('admin/ff1.jpg') }}');
         background-repeat: no-repeat;
         background-size: cover;
     }
     </style>
+
    <div class="py-12 min-h-screen back1" >
     <div class="flex justify-center my-6">
         <img src="{{ asset('logo1.png') }}" class="logo">

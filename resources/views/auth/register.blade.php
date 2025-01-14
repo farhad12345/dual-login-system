@@ -1,4 +1,5 @@
 <x-guest-layout>
+    @section('title', 'Register')
     <style>
         .back{
     background-image: url('{{ asset('admin/ff1.jpg') }}');

@@ -170,13 +170,15 @@ class ProjectController extends Controller
     {
         $project = Project::findOrFail($id);
 
-        // Delete associated document
-        if ($project->document) {
-            Storage::delete($project->document);
+        // Delete the associated document if it exists
+        if ($project->document && file_exists(public_path($project->document))) {
+            unlink(public_path($project->document)); // Remove the file from the public directory
         }
 
+        // Delete the project record
         $project->delete();
 
         return redirect()->route('employee.dashboard')->with('success', 'Project deleted successfully.');
     }
+
 }

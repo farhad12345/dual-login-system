@@ -3,7 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-
+use App\Http\Middleware\WahajAuthMiddleware;
+use App\Http\Middleware\MawayeedAuthMiddleware;
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
@@ -13,6 +14,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->validateCsrfTokens(except: [
             'marriage-form/*',
+        ]);
+
+        $middleware->alias([
+            'wahajauth' => WahajAuthMiddleware::class,
+            'mawayeedauth' => MawayeedAuthMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

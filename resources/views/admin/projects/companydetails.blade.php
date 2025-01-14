@@ -6,6 +6,7 @@
 }
 
     </style>
+     @section('title', 'Company details')
     <div class="py-12 bg-blue-100 min-h-screen" style="background-color:#F5F5DC">
         <div class="flex justify-center my-6">
             <img src="{{ asset('logo1.png') }}" class="logo">

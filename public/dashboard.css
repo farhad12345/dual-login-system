@@ -1,0 +1,314 @@
+
+.table {
+    width: 100%;
+    table-layout: auto;
+    /* Let the table adjust based on content width */
+    word-wrap: break-word;
+    /* Allows long text to break into multiple lines */
+    overflow-wrap: break-word;
+    /* For better handling of long words */
+}
+
+/* Adjust column widths to prevent text overflow */
+.table th,
+.table td {
+    text-align: center;
+    /* Center align the text */
+    vertical-align: middle;
+    /* Vertically center content */
+    padding: 10px;
+    /* Add some padding for better spacing */
+    white-space: normal;
+    /* Allow wrapping of text in cells */
+}
+
+/* Specific column widths for better text distribution */
+.table th:nth-child(1),
+.table td:nth-child(1) {
+    width: 10%;
+    /* Section */
+}
+
+.table th:nth-child(2),
+.table td:nth-child(2) {
+    width: 15%;
+    /* Employee Name */
+}
+
+.table th:nth-child(3),
+.table td:nth-child(3) {
+    width: 20%;
+    /* Company Name */
+}
+
+.table th:nth-child(4),
+.table td:nth-child(4) {
+    width: 15%;
+    /* Service Required */
+}
+
+.table th:nth-child(5),
+.table td:nth-child(5) {
+    width: 10%;
+    /* Days to Complete */
+}
+
+.table th:nth-child(6),
+.table td:nth-child(6) {
+    width: 15%;
+    /* Service Provider */
+}
+
+.table th:nth-child(7),
+.table td:nth-child(7) {
+    width: 15%;
+    /* Last Login */
+}
+
+.table th:nth-child(8),
+.table td:nth-child(8) {
+    width: 10%;
+    /* Time Status */
+}
+
+.table th:nth-child(9),
+.table td:nth-child(9) {
+    width: 10%;
+    /* Status */
+}
+
+.table th:nth-child(10),
+.table td:nth-child(10) {
+    width: 15%;
+    /* Report */
+}
+
+.table th:nth-child(11),
+.table td:nth-child(11) {
+    width: 15%;
+    /* Actions */
+}
+
+/* Adjust button width and icon spacing */
+/* Ensure the button content (icon and text) are aligned in one line */
+.btn {
+    display: inline-flex;
+    /* Align text and icon horizontally */
+    align-items: center;
+    /* Vertically center the text and icon */
+    justify-content: center;
+    padding: 6px 12px;
+    /* Adjust padding for the button */
+    font-size: 14px;
+    /* Ensure proper font size */
+}
+
+.btn i {
+    margin-right: 5px;
+    /* Space between the icon and the text */
+}
+
+/* If the text still overflows or breaks, we can limit the button width */
+.btn-danger {
+    white-space: nowrap;
+    /* Prevent text from wrapping */
+}
+
+
+/* Responsive table */
+@media (max-width: 768px) {
+
+    .table th,
+    .table td {
+        font-size: 12px;
+        /* Reduce font size on smaller screens */
+        padding: 8px;
+        /* Reduce padding on smaller screens */
+    }
+
+    /* Stack buttons vertically on small screens */
+    .btn {
+        flex-direction: column;
+    }
+}
+
+/* Ensures the badge and date are displayed in a single line */
+td .badge {
+    display: inline-block;
+    vertical-align: middle;
+    /* Aligns the badge and text vertically */
+}
+
+td .date-text {
+    display: inline-block;
+    margin-left: 5px;
+    /* Adds space between the badge and the date */
+    vertical-align: middle;
+    /* Aligns the text with the badge */
+    font-size: 0.875rem;
+    /* Adjusts font size for better readability */
+}
+
+.hidden1 {
+    display: none;
+}
+
+.btn-default {
+    background-color: #007bff;
+    /* Default active button color */
+    color: #fff;
+    border: 1px solid #007bff;
+}
+
+.btn-primary {
+    background-color: #ced8e2;
+    /* Inactive button color */
+    color: black;
+    border: 1px solid #007bff;
+}
+
+.table-btn {
+    width: 150px;
+    /* Set a fixed width */
+    text-align: center;
+    /* Ensure text alignment */
+}
+
+.addbutton {
+    width: 150px;
+    /* Set a fixed width */
+    text-align: center;
+    /* Ensure text alignment */
+}
+
+.chart-container {
+    height: 300px;
+    /* Adjust the height as needed */
+}
+
+/* Style the button container */
+.d-flex {
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* Style for buttons */
+.table-btn {
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    color: black; /* Text color */
+    background-color: rgba(0, 123, 255, 0.2); /* Light transparent background */
+    border: 2px solid rgba(0, 123, 255, 0.4); /* Light border to make it stand out */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for better contrast */
+}
+
+/* Hover effect */
+.table-btn:hover {
+    background-color: rgba(0, 123, 255, 0.3); /* Slightly darker on hover */
+    border-color: rgba(0, 123, 255, 0.6); /* Darker border on hover */
+}
+
+/* Focus and active states */
+.table-btn:focus, .table-btn.clicked {
+    background-color: rgba(0, 123, 255, 0.5); /* More solid background when clicked or focused */
+    border-color: rgba(0, 123, 255, 0.7); /* Darker border on focus/click */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Stronger shadow on focus/click */
+}
+
+
+/* Add a background color when a button is clicked */
+.table-btn.clicked {
+    background-color: rgba(0, 123, 255, 0.7); /* Light blue color when clicked */
+    color: black;
+    border: 2px solid #007bff;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4); /* Stronger shadow */
+}
+
+/* Specific color for each button */
+.table-btn.btn-primary {
+    background-color: rgba(0, 123, 255, 0.1); /* Light blue for the primary button */
+    border: 2px solid #007bff;
+}
+
+.table-btn.btn-danger {
+    background-color: rgba(220, 53, 69, 0.1); /* Light red for the danger button */
+    border: 2px solid #dc3545;
+}
+
+.table-btn.btn-info {
+    background-color: rgba(23, 162, 184, 0.1); /* Light blue-green for info button */
+    border: 2px solid #17a2b8;
+}
+
+.table-btn.btn-success {
+    background-color: rgba(40, 167, 69, 0.1); /* Light green for success button */
+    border: 2px solid #28a745;
+}
+
+/* Highlight button when clicked (without hover effect) */
+.table-btn:focus {
+    outline: none;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4); /* Focus shadow for the clicked button */
+}
+
+/* Styling for the buttons */
+/* Table Styling */
+.table th, .table td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+/* Hover effect on rows */
+.table-hover tbody tr:hover {
+    background-color: #f8f9fa; /* Light hover color */
+    transition: background-color 0.3s ease;
+}
+
+/* Table borders styling */
+.table-bordered th, .table-bordered td {
+    border: 1px solid #dee2e6; /* Lighter border color */
+}
+
+/* Pagination links */
+#pagination a {
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+#pagination a:hover {
+    background-color: #0056b3;
+}
+/* Custom Styling for Filters */
+.form-control-lg, .form-select-lg {
+    font-size: 1.1rem; /* Slightly larger text for better readability */
+    /* padding: 0.5rem 1rem; */
+    border-radius: 10px; /* More rounded corners */
+    border: 2px solid #007bff; /* Light blue border */
+    transition: all 0.3s ease;
+}
+
+/* Hover effect for inputs */
+.form-control-lg:hover, .form-select-lg:hover {
+    border-color: #0056b3; /* Darker blue on hover */
+    box-shadow: 0 4px 6px rgba(0, 123, 255, 0.3); /* Soft blue shadow */
+}
+
+/* Focus effect */
+.form-control-lg:focus, .form-select-lg:focus {
+    border-color: #0056b3; /* Darker blue border on focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Blue glow effect */
+    outline: none; /* Remove default outline */
+}
+
+/* For the filter container */
+.s {
+    margin-bottom: 1.5rem; /* Add spacing between rows */
+}

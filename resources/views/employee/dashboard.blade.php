@@ -1,4 +1,5 @@
 <x-app-layout>
+    @section('title', 'Dashboard')
     <style>
         .rtl-container {
             direction: rtl;
@@ -9,6 +10,7 @@
         <div class="flex justify-center my-6">
             <img src="{{ asset('logo1.png') }}" class="logo">
         </div>
+
         {{-- <h2 class="text-lg font-semibold mb-4 text-right text-blue-700 px-4">{{ __('قائمة المشاريع') }}</h2> --}}
         <div class="d-flex justify-content-end mb-3 px-4">
             <a href="{{ route('projects.create') }}" class="btn btn-primary">
@@ -35,6 +37,8 @@
                                     <th>المدينة</th>
                                     <th>السجل التجاري</th>
                                     <th>الحالة</th>
+                                    <th>السبب</th>
+
                                     <th>المستند</th>
                                     <th>الإجراءات</th>
                                 </tr>
@@ -81,6 +85,7 @@
                                                 {{ $project->status == 'started' ? 'تم البدء' : ($project->status == 'in_progress' ? 'قيد التنفيذ' : 'مكتمل') }}
                                             </span>
                                         </td>
+                                        <td><span style="color:red">{{ $project->reason ?? '' }}</span></td>
 
                                         <td>
                                             <a href="{{ asset($project->document) }}" target="_blank"

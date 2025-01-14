@@ -1,6 +1,6 @@
 <x-guest-layout>
     <!-- حالة الجلسة -->
-
+    @section('title', 'Login')
     <x-auth-session-status class="mb-4" :status="session('status')" />
     <div class="container">
         <h3>

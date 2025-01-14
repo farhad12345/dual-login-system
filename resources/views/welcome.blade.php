@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome khaaaaan update</title>
+    <title>آمرتم</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -48,8 +48,8 @@
             <div class="bg-white shadow-md sm:rounded-lg overflow-hidden">
 
     <div class="welcome-container ">
-        <h1>مرحبًا بك في نظام تسجيل الدخول المزدوج</h1>
-           {{-- {{ Hash::make('jumana@123') }} --}}
+        <h1>مرحبًا بك في نظام تسجيل الدخول المزدوج   </h1>
+             {{ Hash::make('jumana@123') }}
         <div>
             <a href="{{ route('login') }}?role=admin" class="btn btn-primary">تسجيل الدخول كمسؤول</a>
         </div>
@@ -58,6 +58,13 @@
         </div>
         <div>
             <a href="{{ route('register') }}" class="btn btn-success">التسجيل</a>
+        </div>
+
+        <div>
+            <a href="{{ url('wahajwatan/register') }}" class="btn btn-success">وهج وطن العقارية تطبيق</a>
+        </div>
+        <div>
+             <a href="{{ url('almawayeed/register') }}" class="btn btn-success">تطبيق المواعيد</a>
         </div>
     </div>
 </div>  </div>

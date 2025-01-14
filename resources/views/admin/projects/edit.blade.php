@@ -7,6 +7,7 @@
 
     }
     </style>
+     @section('title', 'Edit')
     <div class="container mt-5 back1">
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
