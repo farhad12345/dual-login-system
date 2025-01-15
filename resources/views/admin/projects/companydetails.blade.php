@@ -11,6 +11,7 @@
         <div class="flex justify-center my-6">
             <img src="{{ asset('logo1.png') }}" class="logo">
         </div>
+
     <div class="px-4">
         <div class="bg-white shadow-md rounded-lg overflow-hidden">
             <div class="p-6">

@@ -67,11 +67,26 @@
     </style>
 
    <div class="py-12 min-h-screen back1" >
+
     <div class="flex justify-center my-6">
         <img src="{{ asset('logo1.png') }}" class="logo">
     </div>
     <br><br>
     <div class="px-4">
+        {{-- <div class="d-flex justify-content-end mb-2 px-2">
+            <button
+                class="btn btn-outline-info table-btn rounded-pill px-4 py-2 shadow-lg transition-all hover:scale-105 hover:bg-danger hover:text-white"
+                data-target="table-1">
+                <i class="fas fa-briefcase mr-2"></i>  تعديل             </button>&nbsp;&nbsp;
+            <button
+            class="btn btn-outline-danger table-btn rounded-pill px-4 py-2 shadow-lg transition-all hover:scale-105 hover:bg-danger hover:text-white"
+            data-target="table-1">
+            <i class="fas fa-briefcase mr-2"></i> انتهاء        </button>&nbsp;&nbsp;
+        <button
+        class="btn btn-outline-success table-btn rounded-pill px-4 py-2 shadow-lg transition-all hover:scale-105 hover:bg-danger hover:text-white"
+        data-target="table-1">
+        <i class="fas fa-briefcase mr-2"></i>  حذف    </button>&nbsp;&nbsp;
+        </div> --}}
         <div class="bg-light shadow-md rounded-lg overflow-hidden">
             <div class="p-6">
                     <h2 class="text-2xl font-semibold mb-4 text-right text-blue-700">{{ __('قائمة المشاريع') }}</h2>
@@ -97,6 +112,7 @@
                                     <th>السجل التجاري</th>
                                     <th>الحالة</th>
                                     <th>المستند</th>
+                                    <th>ملاحظات</th>
                                     <th>الإجراءات</th>
                                 </tr>
                             </thead>
@@ -138,13 +154,17 @@
                                         <td>
                                             <a href="{{ asset($project->document) }}" target="_blank" class="text-blue-500 hover:underline">عرض</a>
                                         </td>
+                                        <td>{{ $project->reason }}</td>
                                         <td>
                                             <a href="{{ route('admin.projects.edit', $project->id) }}" class="btn btn-warning btn-sm text-white">تعديل</a>
                                             <a href="{{ route('admin.projects.destroy', $project->id) }}"
                                                onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا المشروع؟')"
                                                class="btn btn-danger btn-sm text-white d-inline">
                                                 حذف
-                                            </a>
+                                            </a>&nbsp;
+                                            <a href="#" class="btn btn-warning btn-sm text-white">انتهاء</a>
+
+
                                         </td>
                                     </tr>
                                 @endforeach

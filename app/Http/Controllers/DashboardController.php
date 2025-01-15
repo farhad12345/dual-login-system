@@ -361,8 +361,14 @@ class DashboardController extends Controller
 
     public function CompanyDetails($id)
     {
-        $projects = Project::where('employee_id', $id)->with('employee')->get();
-        return view('admin.projects.companydetails',compact('projects'));
+        $projects = Project::where('employee_id', $id)
+        ->with('employee')
+        ->orderByRaw("CASE
+            WHEN DATE_ADD(start_date, INTERVAL days DAY) <= CURDATE() THEN 1
+            ELSE 0
+        END")
+        ->get();
+            return view('admin.projects.companydetails',compact('projects'));
     }
     public function UsersList()
     {
@@ -381,7 +387,7 @@ class DashboardController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::clxass],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -415,20 +421,30 @@ class DashboardController extends Controller
 
         // Fetch the associated employee
         $employee = $project->employee;
-        if ($employee && $employee->email) {
+        if ($employee && $project->email) {
             $email = $project->email;
             $reason = $project->reason;
 
-            // Log::info('Sending email to: ' . $email);
+            // Validate if the email is valid
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                try {
+                    Mail::send('emails.reason_notification', ['employee' => $employee, 'reason' => $reason], function ($message) use ($email) {
+                        $message->to($email)
+                                ->subject('إشعار: سبب الإجازة')
+                                ->from('farhadkhanfarhad367@gmail.com', 'آمرتم');
+                    });
 
-            Mail::send('emails.reason_notification', ['employee' => $employee, 'reason' => $reason], function ($message) use ($email) {
-                $message->to( $email)
-            ->subject('إشعار: سبب الإجازة')
-            ->from('farhadkhanfarhad367@gmail.com', 'آمرتم');
-            });
-
-            // \Log::info('Email sent to: ' . $email);
+                    \Log::info('Email sent to: ' . $email);
+                } catch (\Exception $e) {
+                    \Log::error('Failed to send email: ' . $e->getMessage());
+                }
+            } else {
+                \Log::warning('Invalid email address: ' . $email);
+            }
+        } else {
+            \Log::warning('Employee or email is missing.');
         }
+
 
         // Redirect back with a success message
         return back()->with('success', 'تم حفظ السبب بنجاح وإرسال إشعار إلى الموظف!');

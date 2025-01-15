@@ -54,7 +54,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="date" class="form-label">التاريخ</label>
-                            <input type="time" placeholder="التاريخ" name="date" id="date"
+                            <input type="date" placeholder="التاريخ" name="date" id="date"
                                 class="form-control @error('date') is-invalid @enderror" required>
                             @error('date')
                                 <div class="invalid-feedback">
@@ -67,7 +67,7 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="time" class="form-label">الوقت</label>
-                            <input type="text" name="time" placeholder="الوقت" id="time"
+                            <input type="time" name="time" placeholder="الوقت" id="time"
                                 class="form-control @error('time') is-invalid @enderror"
                                 value="{{ old('time', $project->time ?? '') }}" required>
                             @error('time')
@@ -93,7 +93,7 @@
                         <div class="col-md-6">
                             <label for="city" class="form-label">المدينة</label>
                             <input type="text" name="city" placeholder="المدينة" id="city"
-                                class="form-control @error('city') is-invalid @enderror" required>
+                                class="form-control @error('city') is-invalid @enderror" >
                             @error('city')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -103,7 +103,7 @@
                         <div class="col-md-6">
                             <label for="address" class="form-label">العنوان</label>
                             <input type="text" name="address" placeholder="العنوان" id="address"
-                                class="form-control @error('address') is-invalid @enderror" required>
+                                class="form-control @error('address') is-invalid @enderror" >
                             @error('address')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -119,7 +119,7 @@
                         <div class="col-md-6">
                             <label for="link" class="form-label">رابط الموقع</label>
                             <input type="text" name="link" placeholder="رابط الموقع" id="link"
-                                class="form-control @error('link') is-invalid @enderror" required>
+                                class="form-control @error('link') is-invalid @enderror" >
                             @error('link')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -129,7 +129,7 @@
                         <div class="col-md-6">
                             <label for="image" class="form-label">صورة الدعوة </label>
                             <input type="file" name="image" placeholder="صورة الدعوة " id="image"
-                                class="form-control @error('image') is-invalid @enderror" required>
+                                class="form-control @error('image') is-invalid @enderror" >
                             @error('image')
                                 <div class="invalid-feedback">
                                     {{ $message }}

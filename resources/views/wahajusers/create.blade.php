@@ -9,14 +9,7 @@
                     @csrf
                     <input type="hidden" value="{{ $id }}" name="employee_id">
                     <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="employee_id" class="form-label">الموظف</label>
-                            <select name="employee_id" id="employee_id" class="form-control">
-                                @foreach ($users as $user)
-                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+
                         <div class="col-md-6">
                             <label for="record_number" class="form-label">رقم السجل</label>
                             <input type="text" name="record_number" placeholder="رقم السجل" id="record_number"
@@ -28,25 +21,12 @@
                                 </div>
                             @enderror
                         </div>
-                    </div>
-                    <div class="row mb-3">
-
                         <div class="col-md-6">
                             <label for="license_number" class="form-label">رقم رخصة فال</label>
                             <input type="text" name="license_number" placeholder="رقم رخصة فال" id="license_number"
                                 class="form-control @error('license_number') is-invalid @enderror"
                                 value="{{ old('license_number', $project->license_number ?? '') }}" required>
                             @error('license_number')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="col-md-6">
-                            <label for="origin_name" class="form-label">اسم المنشأ</label>
-                            <input type="text" name="origin_name" placeholder="اسم المنشأ" id="origin_name"
-                            value="{{ old('origin_name', $project->origin_name ?? '') }}"  class="form-control @error('origin_name') is-invalid @enderror" required>
-                            @error('origin_name')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
@@ -67,10 +47,10 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label for="phone_number" class="form-label">رقم الهاتف</label>
-                            <input type="text" name="phone_number" placeholder="رقم الهاتف" id="phone_number"
-                            value="{{ old('phone_number', $project->phone_number ?? '') }}"    class="form-control @error('phone_number') is-invalid @enderror" required>
-                            @error('phone_number')
+                            <label for="origin_name" class="form-label">اسم المنشأ</label>
+                            <input type="text" name="origin_name" placeholder="اسم المنشأ" id="origin_name"
+                            value="{{ old('origin_name', $project->origin_name ?? '') }}"  class="form-control @error('origin_name') is-invalid @enderror" required>
+                            @error('origin_name')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
@@ -94,6 +74,29 @@
                         </div>
 
                         <div class="col-md-6">
+                            <label for="phone_number" class="form-label">رقم الهاتف</label>
+                            <input type="text" name="phone_number" placeholder="رقم الهاتف" id="phone_number"
+                            value="{{ old('phone_number', $project->phone_number ?? '') }}"    class="form-control @error('phone_number') is-invalid @enderror" required>
+                            @error('phone_number')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+
+                        <div class="col-md-6">
+                            <label for="street" class="form-label">الشارع</label>
+                            <input type="text" name="street" placeholder="أدخل الشارع" id="street"
+                            value="{{ old('street', $project->street ?? '') }}"  class="form-control @error('street') is-invalid @enderror" required>
+                            @error('street')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6">
                             <label for="site_link" class="form-label">الموقع</label>
                             <input type="text" name="site_link" placeholder="رقم الهاتف" id="site_link"
                             value="{{ old('site_link', $project->site_link ?? '') }}"  class="form-control @error('site_link') is-invalid @enderror" required>
@@ -106,8 +109,88 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
+                            <label for="state" class="form-label">الدولة</label>
+                            <input type="text" name="state" placeholder="الدولة" id="state"
+                            class="form-control @error('state') is-invalid @enderror"   value="{{ old('state', $project->state ?? '') }}" required>
+                            @error('state')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6">
+                            <label for="width" class="form-label">العرض</label>
+                            <input type="text" name="width" placeholder="العرض" id="width"
+                            value="{{ old('width', $project->width ?? '') }}"  class="form-control @error('width') is-invalid @enderror" required>
+                            @error('width')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="neighborhood" class="form-label">الحي</label>
+                            <input type="text" name="neighborhood" placeholder="الحي" id="neighborhood"
+                                class="form-control @error('neighborhood') is-invalid @enderror"
+                                value="{{ old('neighborhood', $project->neighborhood ?? '') }}" required>
+                            @error('neighborhood')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="height" class="form-label">الطول</label>
+                            <input type="text" name="height" placeholder="حدد تاريخ البدء" id="height"
+                            value="{{ old('height', $project->height ?? '') }}"  class="form-control @error('height') is-invalid @enderror" required>
+                            @error('height')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="area" class="form-label">المساحة</label>
+                            <input type="text" name="area" placeholder="المساحة" id="area"
+                            value="{{ old('area', $project->area ?? '') }}"  class="form-control @error('area') is-invalid @enderror"
+                                value="{{ old('area', $project->area ?? '') }}" required>
+                            @error('area')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6">
+                            <label for="number_of_floors" class="form-label">عدد الادوار</label>
+                            <input type="text" name="number_of_floors" placeholder="عدد الادوار" id="number_of_floors"
+                            class="form-control @error('number_of_floors') is-invalid @enderror"   value="{{ old('number_of_floors', $project->number_of_floors ?? '') }}" required>
+                            @error('number_of_floors')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+
+                        <div class="col-md-6">
+                            <label for="city" class="form-label">مدينة</label>
+                            <input type="text" name="city" placeholder="أدخل المدينة" id="city"
+                            value="{{ old('city', $project->city ?? '') }}"  class="form-control @error('city') is-invalid @enderror" required>
+                            @error('city')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6">
                             <label for="property_type" class="form-label">نوع العقار</label>
-                            <select name="property_type" id="property_type" class="form-control @error('property_type') is-invalid @enderror" onchange="toggleOtherField()">
+                            <select name="property_type" id="property_type" class="form-control @error('property_type') is-invalid @enderror toggleOtherField">
                                 <option value="">Select </option>
                                 <option value="land">ارض</option>
                                 <option value="building">عمارة</option>
@@ -128,102 +211,16 @@
                                 </div>
                             @enderror
                         </div>
-                        <div class="col-md-6" id="otherField" style="display: none;">
-                            <label for="other" class="form-label">أخرى</label>
-                            <input type="text" name="other" placeholder="" id="other"
-                            value="{{ old('other', $project->other ?? '') }}"  class="form-control @error('other') is-invalid @enderror">
-                            @error('other')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="area" class="form-label">المساحة</label>
-                            <input type="text" name="area" placeholder="المساحة" id="area"
-                            value="{{ old('area', $project->area ?? '') }}"  class="form-control @error('area') is-invalid @enderror"
-                                value="{{ old('area', $project->area ?? '') }}" required>
-                            @error('area')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
 
-                        <div class="col-md-6">
-                            <label for="height" class="form-label">الطول</label>
-                            <input type="text" name="height" placeholder="حدد تاريخ البدء" id="height"
-                            value="{{ old('height', $project->height ?? '') }}"  class="form-control @error('height') is-invalid @enderror" required>
-                            @error('height')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="width" class="form-label">العرض</label>
-                            <input type="text" name="width" placeholder="العرض" id="width"
-                            value="{{ old('width', $project->width ?? '') }}"  class="form-control @error('width') is-invalid @enderror" required>
-                            @error('width')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="col-md-6">
-                            <label for="number_of_floors" class="form-label">عدد الادوار</label>
-                            <input type="text" name="number_of_floors" placeholder="عدد الادوار" id="number_of_floors"
-                            class="form-control @error('number_of_floors') is-invalid @enderror"   value="{{ old('number_of_floors', $project->number_of_floors ?? '') }}" required>
-                            @error('number_of_floors')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="state" class="form-label">الدولة</label>
-                            <input type="text" name="state" placeholder="الدولة" id="state"
-                            class="form-control @error('state') is-invalid @enderror"   value="{{ old('state', $project->state ?? '') }}" required>
-                            @error('state')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="col-md-6">
-                            <label for="city" class="form-label">مدينة</label>
-                            <input type="text" name="city" placeholder="أدخل المدينة" id="city"
-                            value="{{ old('city', $project->city ?? '') }}"  class="form-control @error('city') is-invalid @enderror" required>
-                            @error('city')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="neighborhood" class="form-label">الحي</label>
-                            <input type="text" name="neighborhood" placeholder="الحي" id="neighborhood"
-                                class="form-control @error('neighborhood') is-invalid @enderror"
-                                value="{{ old('neighborhood', $project->neighborhood ?? '') }}" required>
-                            @error('neighborhood')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="col-md-6">
-                            <label for="street" class="form-label">الشارع</label>
-                            <input type="text" name="street" placeholder="أدخل الشارع" id="street"
-                            value="{{ old('street', $project->street ?? '') }}"  class="form-control @error('street') is-invalid @enderror" required>
-                            @error('street')
+
+                        <div class="col-md-6 hidden" id="otherField" style="">
+                            <label for="other" class="form-label">أخرى</label>
+                            <input type="text" name="other" id="other"
+                                value="{{ old('other', $project->other ?? '') }}"
+                                class="form-control @error('other') is-invalid @enderror">
+                            @error('other')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
@@ -240,5 +237,25 @@
 
         </div>
     </div>
+    <script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get the select element and the input field
+        const propertyTypeSelect = document.getElementById('property_type');
+        const otherField = document.getElementById('otherField');
+
+        // Listen for changes on the select element
+        propertyTypeSelect.addEventListener('change', function () {
+            // Check if the selected value is "other"
+            if (propertyTypeSelect.value === 'other') {
+                otherField.classList.remove('hidden'); // Show the input field
+            } else {
+                otherField.classList.add('hidden'); // Hide the input field
+            }
+        });
+    });
+</script>
+
+
 </x-wahaj-layout>
 

@@ -381,7 +381,10 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script>
+
+
         document.addEventListener("DOMContentLoaded", function() {
             const totalEmployeesChartCanvas = document.getElementById('totalEmployeesChart');
             totalEmployeesChartCanvas.height = 300; // Set the desired height (adjust as needed)
@@ -590,42 +593,71 @@
             }
         }
         // Event listener for .table-btn clicks
-        // Event listener for .table-btn clicks
-        $('.table-btn').on('click', function(e) {
-            e.preventDefault(); // Prevent default button behavior
 
-            // Remove the 'clicked' class from all buttons and reset their colors
-            $('.table-btn').removeClass('clicked btn-primary btn-danger btn-info btn-success');
 
-            // Add the 'clicked' class to the clicked button for highlight effect
-            $(this).addClass('clicked'); // This adds the background color and highlight effect
-
-            // Optionally, add a specific color class based on button's data-target
-            switch ($(this).data('target')) {
-                case 'table-1':
-                    $(this).addClass('btn-danger'); // For آمرتم button
-                    break;
-                case 'table-2':
-                    $(this).addClass('btn-info'); // For المواعيد button
-                    break;
-                case 'table-3':
-                    $(this).addClass('btn-success'); // For وهج وطن button
-                    break;
-                default:
-                    $(this).addClass('btn-primary'); // Default color
-            }
-
-            // Hide all table containers
-            $('.table-container').addClass('hidden');
-
-            // Show the targeted table container
-            const targetId = $(this).data('target');
-            console.log('Target table:', targetId); // Debugging log
-            $('#' + targetId).removeClass('hidden');
-
-            // Update button visibility
-            handleButtonVisibility(targetId);
-        });
     </script>
+ <script>
 
+$(document).ready(function () {
+    // Function to handle button visibility
+    function handleButtonVisibility(targetId) {
+        // Hide all "newbtn" buttons
+        $('.newbtn').hide();
+
+        // Show the button corresponding to the targetId
+        switch (targetId) {
+            case 'table-1':
+                $('#newbtn1').show();
+                break;
+            case 'table-2':
+                $('#newbtn2').show();
+                break;
+            case 'table-3':
+                $('#newbtn3').show();
+                break;
+            default:
+                console.warn('No button associated with targetId:', targetId);
+        }
+    }
+
+    // Event listener for table buttons
+    $('.table-btn').on('click', function(e) {
+        e.preventDefault(); // Prevent default button behavior
+
+        // Remove the 'clicked' class from all buttons and reset their colors
+        $('.table-btn').removeClass('clicked btn-primary btn-danger btn-info btn-success');
+
+        // Add the 'clicked' class to the clicked button for highlight effect
+        $(this).addClass('clicked'); // This adds the background color and highlight effect
+
+        // Optionally, add a specific color class based on button's data-target
+        switch ($(this).data('target')) {
+            case 'table-1':
+                $(this).addClass('btn-danger'); // For آمرتم button
+                break;
+            case 'table-2':
+                $(this).addClass('btn-info'); // For المواعيد button
+                break;
+            case 'table-3':
+                $(this).addClass('btn-success'); // For وهج وطن button
+                break;
+            default:
+                $(this).addClass('btn-primary'); // Default color
+        }
+
+        // Hide all table containers
+        $('.table-container').addClass('hidden');
+
+        // Show the targeted table container
+        const targetId = $(this).data('target');
+        console.log('Target table:', targetId); // Debugging log
+        $('#' + targetId).removeClass('hidden');
+
+        // Update button visibility
+        handleButtonVisibility(targetId);
+    });
+});
+
+
+</script>
 </x-app-layout>

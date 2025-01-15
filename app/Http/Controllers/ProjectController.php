@@ -15,7 +15,13 @@ class ProjectController extends Controller
     public function index()
     {
         $employe_id = Auth()->user()->id;
-        $projects = Project::where('employee_id', $employe_id)->with('employee')->get();
+        $projects = Project::where('employee_id', $employe_id)
+        ->with('employee')
+        ->orderByRaw("CASE
+            WHEN DATE_ADD(start_date, INTERVAL days DAY) <= CURDATE() THEN 1
+            ELSE 0
+        END")
+        ->get();
         return view('projects.index', compact('projects'));
     }
 

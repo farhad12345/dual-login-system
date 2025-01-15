@@ -42,7 +42,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($mawayeedprojects as $mawayeedproject)
+                                @foreach ($projects as $mawayeedproject)
                                     @php
                                         $types = [
                                             'marriage' => 'الزواج',
@@ -82,12 +82,12 @@
                                             </span>
                                         </td> --}}
                                         <td><a target="_blank"
-                                                href="{{ route('admin.almawayeed.edit', $mawayeedproject->id) }}"
+                                                href="{{ route('almawayeed.edit', $mawayeedproject->id) }}"
                                                 class="btn btn-warning btn-sm">
                                                 <i class="fas fa-edit me-2"></i>&nbsp;التعديل
                                             </a></td>
                                         <td>
-                                            <a href="{{ route('admin.almawayeed.destroy', $mawayeedproject->id) }}"
+                                            <a href="{{ route('almawayeed.destroy', $mawayeedproject->id) }}"
                                                 onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا المشروع؟')"
                                                 class="btn btn-danger btn-sm">
                                                 <i class="fas fa-trash-alt me-2"></i> &nbsp; حذف المشروع

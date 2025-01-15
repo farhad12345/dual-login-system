@@ -15,8 +15,18 @@
         <div class="d-flex justify-content-end mb-3 px-4">
             <a href="{{ route('projects.create') }}" class="btn btn-primary">
                 <i class="fas fa-plus"></i> إضافة مشروع
+            </a>&nbsp;&nbsp;
+            <a href="#" class="btn btn-primary">
+                <i class="fas fa-plus"></i> إضافة مؤسسة
+            </a>&nbsp;&nbsp;
+            <a href="#" class="btn btn-primary">
+                <i class="fas fa-plus"></i> إضافة فرد
+            </a>&nbsp;&nbsp;
+            <a href="#" class="btn btn-primary">
+                <i class="fas fa-plus"></i>إضافة لهيئة أو سفارة
             </a>
         </div>
+
 
         <!-- Card Container -->
         <div class="px-4">

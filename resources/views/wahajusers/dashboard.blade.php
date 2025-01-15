@@ -87,12 +87,12 @@
 
 
                                         <td><a target="_blank"
-                                                href="{{ url('admin/wahajprojects/edit/' . $wahajproject->id) }}"
+                                                href="{{ route('wahajwatan.edit' , $wahajproject->id) }}"
                                                 class="btn btn-warning btn-sm">
                                                 <i class="fas fa-edit me-2"></i>&nbsp;التعديل
                                             </a></td>
                                         <td>
-                                            <a href="{{ route('admin.wahajprojects.destroy', $wahajproject->id) }}"
+                                            <a href="{{ route('wahajwatan.destroy', $wahajproject->id) }}"
                                                 onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا المشروع؟')"
                                                 class="btn btn-danger btn-sm">
                                                 <i class="fas fa-trash-alt me-2"></i> &nbsp; حذف المشروع

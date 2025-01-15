@@ -49,7 +49,7 @@
 
     <div class="welcome-container ">
         <h1>مرحبًا بك في نظام تسجيل الدخول المزدوج   </h1>
-             {{ Hash::make('jumana@123') }}
+             {{-- {{ Hash::make('jumana@123') }} --}}
         <div>
             <a href="{{ route('login') }}?role=admin" class="btn btn-primary">تسجيل الدخول كمسؤول</a>
         </div>

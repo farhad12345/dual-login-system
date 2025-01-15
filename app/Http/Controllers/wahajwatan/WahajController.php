@@ -86,54 +86,53 @@ class WahajController extends Controller
     public function WahajStore(Request $request)
     {
         $request->validate([
-            'company_name' => 'required|string|max:255',
-            'service_required' => 'required|string|max:255',
-            'start_date' => 'required|date',
-            // 'completion_date' => 'required|date|after_or_equal:start_date',
-            'status' => 'required|in:started,in_progress,completed',
-            // 'document' => 'required|file|mimes:pdf,doc,docx',
+            'employee_id' => 'required|exists:users,id',
+            'record_number' => 'required|string|max:255',
+            'license_number' => 'required|string|max:255',
+            'origin_name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone_number' => 'nullable|string|max:20',
+            'service' => 'nullable|string',
+            'site_link' => 'nullable|string|max:255',
+            'property_type' => 'nullable|string',
+            'area' => 'nullable|numeric',
+            'height' => 'nullable|numeric',
+            'width' => 'nullable|numeric',
+            'number_of_floors' => 'nullable|integer',
+            'state' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'neighborhood' => 'nullable|string|max:255',
+
         ]);
-   // Initialize the document path as null
-      $documentPath = null;
-    // Check if the document file is uploaded
-    if ($request->hasFile('document')) {
-        $documentFile = $request->file('document');
-        $documentPath = $documentFile->getClientOriginalName(); // Get original file name
-        $destinationPath = public_path('uploads/wahaj/documents'); // Target directory
-        // Ensure directory exists
-        if (!file_exists($destinationPath)) {
-            mkdir($destinationPath, 0755, true);
-        }
-        // Move file to target directory
-        $documentFile->move($destinationPath, $documentPath);
-        // Set the relative path for saving
-        $documentPath = 'uploads/wahaj/documents/' . $documentPath;
-    }
+
+        // Check if 'other' property type was selected and set its value
+        $propertyType = $request->property_type === 'other' ? $request->other : $request->property_type;
+
 
     // Save project data into the database
     $project = WahajWatanDetail::create([
         'employee_id' => $request->employee_id,
-        'company_name' => $request->company_name,
-        'service_required' => $request->service_required,
-        'start_date' => $request->start_date,
-        'days' => $request->days,
-        'status' => $request->status,
-        'person_name' => $request->person_name,
-        'service_type' => $request->service_type,
-        'city'=>$request->city,
+        'record_number' => $request->record_number,
+        'license_number' => $request->license_number,
+        'origin_name' => $request->origin_name,
         'email' => $request->email,
-        'ministry' => $request->ministry,
-        'country'=>$request->country,
-        'person_contact' => $request->person_contact,
-        'business_type'=>$request->business_type,
-        'type'=>$request->type,
-        'commertial_register'=>$request->commertial_register,
-        'document' => $documentPath, // Save relative path or null if no file
+        'phone_number' => $request->phone_number,
+        'service' => $request->service,
+        'site_link' => $request->site_link,
+        'property_type' => $propertyType,
+        'area' => $request->area,
+        'height' => $request->height,
+        'width' => $request->width,
+        'number_of_floors' => $request->number_of_floors,
+        'state' => $request->state,
+        'city' => $request->city,
+        'neighborhood' => $request->neighborhood,
+        'street' => $request->street,
     ]);
 
          // Send email to admin
-         $user = User::where('role','admin')->first();
-          Mail::to($user->email)->send(new ProjectCreatedNotification($project->toArray()));
+        //  $user = User::where('role','admin')->first();
+        //   Mail::to($user->email)->send(new ProjectCreatedNotification($project->toArray()));
         return redirect()->route('wahajwatan.dashboard')->with('success', 'Project created successfully.');
     }
     public function WahajWatanSaveReason(Request $request)
@@ -170,6 +169,20 @@ class WahajController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Project deleted successfully.');
     }
+    public function wahajwatanProjectDestroy($id)
+    {
+        $project = WahajWatanDetail::findOrFail($id);
+
+        // Delete associated document
+        if ($project->document && file_exists(public_path($project->document))) {
+            unlink(public_path($project->document)); // Remove the file from the public directory
+        }
+
+        $project->delete();
+
+        return redirect()->route('wahajwatan.dashboard')->with('success', 'Project deleted successfully.');
+    }
+
     public function Edit($id)
     {
         $project = WahajWatanDetail::findOrFail($id);

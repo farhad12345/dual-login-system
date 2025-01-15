@@ -18,7 +18,7 @@ Route::middleware(['wahajauth'])
         Route::get('/dashboard', [WahajController::class, 'Dashboard'])->name('dashboard');
         Route::get('/wahajwatan/edit/{id}', [WahajController::class, 'edit'])->name('edit');
         Route::PUT('/wahajwatan/update/{id}', [WahajController::class, 'wahajwatanrojectUpdate'])->name('update');
-        Route::DELETE('/wahajwatan/destroye/{id}', [WahajController::class, 'wahajwatanProjectDestroy'])->name('destroy');
+        Route::get('/wahajwatan/destroye/{id}', [WahajController::class, 'wahajwatanProjectDestroy'])->name('destroy');
         Route::get('/wahajwatan/create', [WahajController::class, 'Create'])->name('create');
 
 
