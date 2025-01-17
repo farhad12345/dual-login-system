@@ -49,6 +49,7 @@
                     </x-slot>
                     <x-slot name="content">
                         <!-- Authentication -->
+                        @if (Auth()->user()->role == 'admin')
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <x-dropdown-link :href="route('logout')"
@@ -60,6 +61,19 @@
                             </span>
 
                             </x-dropdown-link>
+                            @else
+                            <form method="POST" action="{{ route('Employelogout') }}">
+                                @csrf
+                                <x-dropdown-link :href="route('Employelogout')"
+                                    onclick="event.preventDefault();
+                                                    this.closest('form').submit();">
+                                <span style="color: black;">
+                                    <i class="fas fa-sign-out-alt me-2" style="color: black;"></i> <!-- Logout icon -->
+                                    {{ __('Log Out') }}
+                                </span>
+
+                                </x-dropdown-link>
+                            @endif
                         </form>
                     </x-slot>
                 </x-dropdown>

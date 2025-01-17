@@ -17,9 +17,11 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use App\Mail\ProjectCreatedNotification;
+use App\Traits\CountryCodeTrait;
 
 class DashboardController extends Controller
 {
+    use CountryCodeTrait;
     public function adminDashboard()
     {
         //  $users = User::where('role','employee')->get();
@@ -44,35 +46,54 @@ class DashboardController extends Controller
         ->orderBy('projects.id', 'desc')
         ->paginate(10);
 
+        // $wahajprojects = WahajWatanDetail::with('employee')
+        // ->select(
+        //     'wahaj_watan_details.*', // Select all columns from the wahaj_watan_details table
+        //     'wahaj_users.id as user_id', // Employee user ID
+        //     'wahaj_users.name as employee_name' // Employee name
+        // )
+        // ->leftJoin('wahaj_users', 'wahaj_watan_details.employee_id', '=', 'wahaj_users.id') // Join with wahaj_users
+        // ->whereIn('wahaj_watan_details.id', function ($query) {
+        //     $query->select(DB::raw('MAX(id)'))
+        //         ->from('wahaj_watan_details') // Subquery for the latest record per employee
+        //         ->groupBy('employee_id');
+        // })
+        // ->orderBy('wahaj_watan_details.id', 'desc') // Order by latest record
+        // ->paginate(10);
         $wahajprojects = WahajWatanDetail::with('employee')
-        ->select(
-            'wahaj_watan_details.*', // Select all columns from the wahaj_watan_details table
-            'wahaj_users.id as user_id', // Employee user ID
-            'wahaj_users.name as employee_name' // Employee name
-        )
-        ->leftJoin('wahaj_users', 'wahaj_watan_details.employee_id', '=', 'wahaj_users.id') // Join with wahaj_users
-        ->whereIn('wahaj_watan_details.id', function ($query) {
-            $query->select(DB::raw('MAX(id)'))
-                ->from('wahaj_watan_details') // Subquery for the latest record per employee
-                ->groupBy('employee_id');
-        })
-        ->orderBy('wahaj_watan_details.id', 'desc') // Order by latest record
-        ->paginate(10); // Paginate results
+    ->select(
+        'wahaj_watan_details.*', // Select all columns from the wahaj_watan_details table
+        'wahaj_users.id as user_id', // Employee user ID
+        'wahaj_users.name as employee_name' // Employee name
+    )
+    ->leftJoin('wahaj_users', 'wahaj_watan_details.employee_id', '=', 'wahaj_users.id') // Join with wahaj_users
+    ->orderBy('wahaj_watan_details.id', 'desc') // Order by latest record
+     ->paginate(10);
+
           //al mawayeed projects query
-          $mawayeedprojects = MawayeedProject::with('employee')
-          ->select(
-              'mayeed_projects.*',
-              'mawayeed_users.id as user_id',
-              'mawayeed_users.name as employee_name'
-          )
-          ->leftJoin('mawayeed_users', 'mayeed_projects.employee_id', '=', 'mawayeed_users.id')
-          ->whereIn('mayeed_projects.id', function ($query) {
-              $query->select(DB::raw('MAX(id)'))
-                  ->from('mayeed_projects')
-                  ->groupBy('mayeed_projects.employee_id');
-          })
-          ->orderBy('mayeed_projects.date', 'desc') // Assuming 'date' is the column for sorting
-          ->paginate(10);
+        //   $mawayeedprojects = MawayeedProject::with('employee')
+        //   ->select(
+        //       'mayeed_projects.*',
+        //       'mawayeed_users.id as user_id',
+        //       'mawayeed_users.name as employee_name'
+        //   )
+        //   ->leftJoin('mawayeed_users', 'mayeed_projects.employee_id', '=', 'mawayeed_users.id')
+        //   ->whereIn('mayeed_projects.id', function ($query) {
+        //       $query->select(DB::raw('MAX(id)'))
+        //           ->from('mayeed_projects')
+        //           ->groupBy('mayeed_projects.employee_id');
+        //   })
+        //   ->orderBy('mayeed_projects.date', 'desc') // Assuming 'date' is the column for sorting
+        //   ->paginate(10);
+$mawayeedprojects = MawayeedProject::with('employee')
+    ->select(
+        'mayeed_projects.*',
+        'mawayeed_users.id as user_id',
+        'mawayeed_users.name as employee_name'
+    )
+    ->leftJoin('mawayeed_users', 'mayeed_projects.employee_id', '=', 'mawayeed_users.id')
+    ->orderBy('mayeed_projects.date', 'desc') // Assuming 'date' is the column for sorting
+    ->paginate(10);
 
 
 
@@ -114,15 +135,14 @@ class DashboardController extends Controller
     public function adminDashboardListData(Request $request)
     {
         try {
-            $projectsQuery = Project::with('employee')
-            ->select('projects.*', 'users.id as user_id', 'users.name as employee_name')
-            ->leftJoin('users', 'projects.employee_id', '=', 'users.id')
-            ->whereIn('projects.id', function ($query) {
-                $query->select(DB::raw('MAX(id)'))
-                    ->from('projects')
-                    ->groupBy('projects.employee_id');
-            });
-
+         $projectsQuery = Project::with('employee')
+    ->select('projects.*', 'users.id as user_id', 'users.name as employee_name')
+    ->join('users', 'projects.employee_id', '=', 'users.id') // Use INNER JOIN to exclude users without projects
+    ->whereIn('projects.id', function ($query) {
+        $query->select(DB::raw('MAX(id)'))
+            ->from('projects')
+            ->groupBy('projects.employee_id'); // Select the latest project for each employee
+    });
         // Filter for employee name in the `users` table
         if ($request->filled('filterName')) {
             $projectsQuery->where('users.name', 'like', '%' . $request->filterName . '%');
@@ -214,17 +234,22 @@ class DashboardController extends Controller
     //admin project Create
     public function ProjectCreate()
     {
+          // Get country codes with names
+          $countryCodesWithNames = $this->getCountryCodesWithNames();
+
+          // Get only country names
+          $countryNames = $this->getCountryNames();
         $users = User::where('role', 'employee')->get();
-        return view('admin.projects.create', compact('users'));
+        return view('admin.projects.create', compact('users','countryCodesWithNames','countryNames'));
     }
     public function ProjectStore(Request $request)
     {
         $request->validate([
             'company_name' => 'required|string|max:255',
-            'service_required' => 'required|string|max:255',
-            'start_date' => 'required|date',
-            'days' => 'required',
-            'status' => 'required|in:started,in_progress,completed',
+            'service_required' => 'nullable|string|max:255',
+            'start_date' => 'nullable|date',
+            'days' => 'nullable',
+            'status' => 'nullable|in:started,in_progress,completed',
             // 'document' => 'required|file|mimes:pdf,doc,docx',
         ]);
         // Initialize the document path as null
@@ -277,10 +302,10 @@ class DashboardController extends Controller
     // Validate the request data
     $request->validate([
         'company_name' => 'required|string|max:255',
-        'service_required' => 'required|string|max:255',
-        'start_date' => 'required|date',
-        'days' => 'required',
-        'status' => 'required|in:started,in_progress,completed',
+        'service_required' => 'nullable|string|max:255',
+        'start_date' => 'nullable|date',
+        'days' => 'nullable',
+        'status' => 'nullable|in:started,in_progress,completed',
         // 'document' => 'nullable|file|mimes:pdf,doc,docx',
     ]);
 

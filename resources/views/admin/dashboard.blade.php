@@ -109,6 +109,7 @@
                                 <thead class="table-dark">
                                     <tr>
                                         <!--<th>القسم</th>-->
+                                         <th>اسم الموظف</th>
                                         <th> اسم صاحب الدعوة</th>
                                         <th>المناسبة</th>
                                         <th>اليوم</th>
@@ -137,7 +138,7 @@
 
                                         @endphp
                                         <tr>
-
+                                        <td>{{ $mawayeedproject->employee->name }}</td>
                                             <td>{{ $mawayeedproject->invitation_name }}</td>
 
 
@@ -151,13 +152,16 @@
                                             <td>{{ $mawayeedproject->address }}</td>
                                             <td><a href="{{ $mawayeedproject->link }}"><u>Link</u></a></td>
                                             <td>
-                                                @if ($mawayeedproject->image)
-                                                    <img src="{{ asset($mawayeedproject->image) }}" alt="Project Image"
-                                                        style="width: 100px; height: auto;">
-                                                @else
-                                                    No Image
-                                                @endif
-                                            </td>
+                                        @if ($mawayeedproject->image)
+                                            <a href="{{ asset($mawayeedproject->image) }}" target="_blank">
+                                                <img src="{{ asset($mawayeedproject->image) }}" alt="Project Image"
+                                                    style="width: 100px; height: auto; cursor: pointer;">
+                                            </a>
+                                        @else
+                                            No Image
+                                        @endif
+                                    </td>
+
                                             {{-- <td>
                                                 <span
                                                     class="badge {{ $mawayeedproject->status == 'started' ? 'bg-danger' : ($mawayeedproject->status == 'in_progress' ? 'bg-warning' : 'bg-success') }}">

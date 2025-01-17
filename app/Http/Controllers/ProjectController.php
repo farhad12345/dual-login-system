@@ -4,13 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Project;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
+use App\Traits\CountryCodeTrait;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use App\Mail\ProjectCreatedNotification;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
+
 class ProjectController extends Controller
 {
+    use CountryCodeTrait;
     // Display a listing of the projects
     public function index()
     {
@@ -28,7 +35,11 @@ class ProjectController extends Controller
     // Show the form for creating a new project
     public function create()
     {
-        return view('projects.create');
+        $countryCodesWithNames = $this->getCountryCodesWithNames();
+
+        // Get only country names
+        $countryNames = $this->getCountryNames();
+        return view('projects.create',compact('countryCodesWithNames','countryNames'));
     }
 
     // Store a newly created project in storage
@@ -186,5 +197,39 @@ class ProjectController extends Controller
 
         return redirect()->route('employee.dashboard')->with('success', 'Project deleted successfully.');
     }
+    public function Logout(Request $request): RedirectResponse
+    {
+        $user = Auth::user();
 
+        // Update the user's last logout timestamp
+        if ($user) {
+            $user->update(['last_logout' => now()]);
+        }
+        Auth::guard('web')->logout();
+        Auth::logout();
+        session()->invalidate();
+        session()->regenerateToken();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/clear');
+    }
+    public function downloadPdf(PDF $pdf)
+    {
+        // Retrieve your data
+        $projects = Project::all(); // Adjust this query as needed
+
+        // Load the view and generate the PDF
+        // $pdf = $pdf->loadView('projects.pdf', compact('projects'));
+        $pdf = $pdf->loadView('projects.pdf', compact('projects'))
+        ->setPaper('a4', 'portrait')
+        ->setOption('isHtml5ParserEnabled', true)
+        ->setOption('isPhpEnabled', true)
+        ->setOption('defaultFont', 'Amiri');
+
+        // Return the generated PDF for download
+        return $pdf->download('projects_report.pdf');
+    }
 }

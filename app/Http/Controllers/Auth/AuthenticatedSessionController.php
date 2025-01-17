@@ -72,11 +72,16 @@ class AuthenticatedSessionController extends Controller
             $user->update(['last_logout' => now()]);
         }
         Auth::guard('web')->logout();
+        Auth::logout();
+        session()->invalidate();
+        session()->regenerateToken();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        // return redirect('/');
+
+        return redirect('/clear');
     }
 }

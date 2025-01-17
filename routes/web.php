@@ -40,9 +40,11 @@ Route::get('/clear', function () {
 
     // Clear compiled classes
     Artisan::call('optimize:clear');
+    return redirect('/');
 
-    return 'Cache cleared successfully!';
+    // return 'Cache cleared successfully!';
 });
+Route::get('projects/pdf', [ProjectController::class, 'downloadPdf'])->name('projects.downloadPdf');
 
 Route::get('/', function () {
     return view('welcome');
@@ -116,6 +118,9 @@ Route::middleware(['auth', RoleMiddleware::class . ':employee'])->group(function
 });
 Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])
     ->name('logout');
+
+    Route::post('employe/logout', [ProjectController::class, 'Logout'])
+    ->name('Employelogout');
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');
@@ -175,3 +180,5 @@ Route::middleware('auth')->group(function () {
 
 //apis
 Route::get('/get/amertm_data/list', [DashboardController::class, 'adminDashboardListData'])->name('profile.edit');
+
+Route::get('projects/report/download', [DashboardController::class, 'downloadProjectsReport'])->name('projects.report.download');

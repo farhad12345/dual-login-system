@@ -64,6 +64,8 @@
         background-repeat: no-repeat;
         background-size: cover;
     }
+
+
     </style>
 
    <div class="py-12 min-h-screen back1" >
@@ -96,6 +98,7 @@
                             {{ session('success') }}
                         </div>
                     @endif
+                    <a href="{{ route('projects.downloadPdf') }}" class="btn btn-primary">تحميل تقرير PDF</a>
 
                     <div class="rtl-container" style="direction: rtl;">
                         <table class="table table-bordered table-blue">
