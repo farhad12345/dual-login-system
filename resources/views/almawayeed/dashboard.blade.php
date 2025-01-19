@@ -70,7 +70,7 @@
                                         <td>
                                             @if ($mawayeedproject->image)
                                                 <img src="{{ asset($mawayeedproject->image) }}" alt="Project Image"
-                                                    style="width: 100px; height: auto;">
+                                                    style="width: 100px; height: 65px;">
                                             @else
                                                 No Image
                                             @endif
@@ -81,7 +81,7 @@
                                                 {{ $mawayeedproject->status == 'started' ? 'تم البدء' : ($mawayeedproject->status == 'in_progress' ? 'قيد التنفيذ' : 'مكتمل') }}
                                             </span>
                                         </td> --}}
-                                        <td><a target="_blank"
+                                        <td><a
                                                 href="{{ route('almawayeed.edit', $mawayeedproject->id) }}"
                                                 class="btn btn-warning btn-sm">
                                                 <i class="fas fa-edit me-2"></i>&nbsp;التعديل

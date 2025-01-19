@@ -104,6 +104,7 @@
                         <table class="table table-bordered table-blue">
                             <thead class="bg-blue-600 text-white">
                                 <tr>
+                                    
                                     <th>اسم الشركة</th>
                                     <th>الخدمة المطلوبة</th>
                                     <th>تاريخ البدء</th>

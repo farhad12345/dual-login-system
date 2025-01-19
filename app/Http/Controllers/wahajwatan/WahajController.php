@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use App\Mail\ProjectCreatedNotification;
-
+use Illuminate\Support\Facades\Validator;
 class WahajController extends Controller
 {
     public function loginForm()
@@ -85,7 +85,7 @@ class WahajController extends Controller
 
     public function WahajStore(Request $request)
     {
-        $request->validate([
+           $validator = Validator::make($request->all(), [
             'employee_id' => 'required|exists:users,id',
             'record_number' => 'required|string|max:255',
             'license_number' => 'required|string|max:255',
@@ -105,6 +105,9 @@ class WahajController extends Controller
 
         ]);
 
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
         // Check if 'other' property type was selected and set its value
         $propertyType = $request->property_type === 'other' ? $request->other : $request->property_type;
 
@@ -204,27 +207,18 @@ class WahajController extends Controller
     }
     public function WahajProjectStore(Request $request)
     {
-        $request->validate([
-            'employee_id' => 'required|exists:users,id',
-            'record_number' => 'required|string|max:255',
-            'license_number' => 'required|string|max:255',
-            'origin_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone_number' => 'nullable|string|max:20',
-            'service' => 'nullable|string',
-            'site_link' => 'nullable|string|max:255',
-            'property_type' => 'nullable|string',
-            'area' => 'nullable|numeric',
-            'height' => 'nullable|numeric',
-            'width' => 'nullable|numeric',
-            'number_of_floors' => 'nullable|integer',
-            'state' => 'nullable|string|max:255',
-            'city' => 'nullable|string|max:255',
-            'neighborhood' => 'nullable|string|max:255',
-            'street' => 'nullable|string|max:255',
-            'other' => 'nullable|string|max:255', // Optional field
-        ]);
-
+        // $validator = Validator::make($request->all(), [
+        //    
+        //     'record_number' => 'required|string|max:255',
+        //     'license_number' => 'required|string|max:255',
+        //     'origin_name' => 'required|string|max:255',
+        // 
+        // ]);
+        
+        // if ($validator->fails()) {
+        //     // Redirect back with validation errors
+        //     return redirect()->back()->withErrors($validator)->withInput();
+        // }
         // Check if 'other' property type was selected and set its value
         $propertyType = $request->property_type === 'other' ? $request->other : $request->property_type;
 

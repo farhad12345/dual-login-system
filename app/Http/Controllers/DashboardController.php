@@ -85,15 +85,17 @@ class DashboardController extends Controller
         //   })
         //   ->orderBy('mayeed_projects.date', 'desc') // Assuming 'date' is the column for sorting
         //   ->paginate(10);
-$mawayeedprojects = MawayeedProject::with('employee')
-    ->select(
-        'mayeed_projects.*',
-        'mawayeed_users.id as user_id',
-        'mawayeed_users.name as employee_name'
-    )
-    ->leftJoin('mawayeed_users', 'mayeed_projects.employee_id', '=', 'mawayeed_users.id')
-    ->orderBy('mayeed_projects.date', 'desc') // Assuming 'date' is the column for sorting
-    ->paginate(10);
+        $mawayeedprojects = MawayeedProject::with('employee')
+        ->select(
+            'mayeed_projects.*',
+            'mawayeed_users.id as user_id',
+            'mawayeed_users.name as employee_name'
+        )
+        ->leftJoin('mawayeed_users', 'mayeed_projects.employee_id', '=', 'mawayeed_users.id')
+        ->orderByRaw("ABS(DATEDIFF(mayeed_projects.date, CURDATE())) ASC") // Sort by closest due date
+        ->orderBy('mayeed_projects.date', 'asc') // Secondary sort by date in ascending order
+        ->paginate(10);
+
 
 
 
@@ -210,6 +212,13 @@ $mawayeedprojects = MawayeedProject::with('employee')
         ->orderBy('id', 'desc')
         ->paginate(8);
         return view('admin.projects.details',compact('projects'));
+    }
+      public function PrevoiusMaweedProjects()
+    {
+        $projects = MawayeedProject::with('employee')
+        ->orderBy('id', 'desc')
+        ->paginate(20);
+        return view('admin.prevousprojects',compact('projects'));
     }
     public function destroy($id)
     {

@@ -80,6 +80,8 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function ()
 
     Route::post('admin/projects/index', action: [DashboardController::class, 'index'])->name('admin.projects.index');
 
+   Route::get('/admin/maweed/prevoius/projects', [DashboardController::class, 'PrevoiusMaweedProjects'])->name('admin.prevoius.maweed.projects');
+
    //admin add reason
    Route::post('/admin/projects/save-reason', [DashboardController::class, 'saveReason'])->name('admin.projects.saveReason');
 

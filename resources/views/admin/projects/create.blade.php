@@ -230,7 +230,7 @@
                             <label for="email" class="form-label">البريد الإلكتروني</label>
                             <input type="text" name="email" placeholder="أدخل البريد الإلكتروني" id="email"
                                 class="form-control @error('email') is-invalid @enderror"
-                                value="{{ old('email', $project->email ?? '') }}" required>
+                                value="{{ old('email', $project->email ?? '') }}" >
                             @error('email')
                                 <div class="invalid-feedback">
                                     {{ $message }}

@@ -103,7 +103,7 @@
         </form>
 
     </td>
-    <td><a target="_blank"
+    <td><a
             href="{{ route('admin.projects.edit', $project->id) }}"
             class="btn btn-warning btn-sm">
             <i class="fas fa-edit me-2"></i>&nbsp;التعديل

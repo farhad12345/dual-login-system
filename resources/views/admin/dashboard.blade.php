@@ -25,6 +25,10 @@
                 <i class="fas fa-fire-alt mr-2"></i> وهج وطن
             </button>&nbsp;&nbsp;
         </div>
+      <a href="{{ route('admin.prevoius.maweed.projects') }}" id="newbtnmaweed" class="btn btn-primary addbutton "
+              >
+                <i class="fas fa-eye"></i> المواعيد السابقه
+            </a>
 
         <div class="d-flex justify-content-end mb-3 px-4">
             <a href="{{ route('admin.projects.create') }}" id="newbtn1" class="btn btn-primary addbutton newbtn"
@@ -103,92 +107,128 @@
                         </div>
 
                         <!-- Table 2 -->
-                        <div id="table-2" class="table-container hidden">
-                            <!-- Copy the same table structure as Table 1 -->
-                            <table class="table table-bordered table-hover table-striped table-responsive">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <!--<th>القسم</th>-->
-                                         <th>اسم الموظف</th>
-                                        <th> اسم صاحب الدعوة</th>
-                                        <th>المناسبة</th>
-                                        <th>اليوم</th>
-                                        <th>التاريخ</th>
-                                        <th>الوقت</th>
-                                        {{-- <th>الدولة</th> --}}
-                                        <th>المدينة</th>
-                                        <th>العنوان </th>
-                                        <th>رابط الموقع</th>
-                                        <th>صورة الدعوة</th>
-                                        <th>التعديل</th>
+                   <div id="table-2" class="table-container hidden">
+    <style>
+        .table-container {
+            overflow-x: auto; /* Enable horizontal scroll on smaller screens */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
+        }
 
-                                        <th>الإجراءات</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($mawayeedprojects as $mawayeedproject)
-                                        @php
-                                            $types = [
-                                                'marriage' => 'الزواج',
-                                                'honoring' => 'تكريم',
-                                                'events' => 'فعاليات',
-                                                'national_occasions' => 'مناسبات وطنية',
-                                                'launching' => 'تدشين',
-                                            ];
+        .table-container table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: auto; /* Allow columns to adjust dynamically */
+        }
 
-                                        @endphp
-                                        <tr>
-                                        <td>{{ $mawayeedproject->employee->name }}</td>
-                                            <td>{{ $mawayeedproject->invitation_name }}</td>
+        .table-container th,
+        .table-container td {
+            white-space: nowrap; /* Keep text in one line */
+            text-align: center; /* Center align text */
+            overflow: hidden; /* Prevent overflow */
+            text-overflow: ellipsis; /* Add ellipsis for overflow text */
+            vertical-align: middle; /* Align text vertically */
+            padding: 10px; /* Add padding for better readability */
+            min-width: 100px; /* Ensure columns have a minimum width */
+        }
 
+        .table-container th {
+            font-weight: bold;
+            background-color: #f8f9fa; /* Light background for headers */
+        }
 
-                                            <td>{{ $types[$mawayeedproject->occasion] ?? 'غير محدد' }}</td>
-                                            <td>{{ $mawayeedproject->day }}</td>
-                                            <td>{{ $mawayeedproject->date }}</td>
-                                            <td>{{ $mawayeedproject->time }}</td>
+        .table-container img {
+            max-width: 100%;
+            height: auto; /* Maintain aspect ratio for images */
+        }
 
-                                            {{-- <td>{{ $mawayeedproject->state }}</td> --}}
-                                            <td>{{ $mawayeedproject->city }}</td>
-                                            <td>{{ $mawayeedproject->address }}</td>
-                                            <td><a href="{{ $mawayeedproject->link }}"><u>Link</u></a></td>
-                                            <td>
-                                        @if ($mawayeedproject->image)
-                                            <a href="{{ asset($mawayeedproject->image) }}" target="_blank">
-                                                <img src="{{ asset($mawayeedproject->image) }}" alt="Project Image"
-                                                    style="width: 100px; height: auto; cursor: pointer;">
-                                            </a>
-                                        @else
-                                            No Image
-                                        @endif
-                                    </td>
+        /* Media queries for responsiveness */
+        @media screen and (max-width: 768px) {
+            .table-container th,
+            .table-container td {
+                font-size: 12px; /* Reduce font size for smaller screens */
+                padding: 5px; /* Reduce padding for smaller screens */
+            }
+        }
 
-                                            {{-- <td>
-                                                <span
-                                                    class="badge {{ $mawayeedproject->status == 'started' ? 'bg-danger' : ($mawayeedproject->status == 'in_progress' ? 'bg-warning' : 'bg-success') }}">
-                                                    {{ $mawayeedproject->status == 'started' ? 'تم البدء' : ($mawayeedproject->status == 'in_progress' ? 'قيد التنفيذ' : 'مكتمل') }}
-                                                </span>
-                                            </td> --}}
-                                            <td><a target="_blank"
-                                                    href="{{ route('admin.almawayeed.edit', $mawayeedproject->id) }}"
-                                                    class="btn btn-warning btn-sm">
-                                                    <i class="fas fa-edit me-2"></i>&nbsp;التعديل
-                                                </a></td>
-                                            <td>
-                                                <a href="{{ route('admin.almawayeed.destroy', $mawayeedproject->id) }}"
-                                                    onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا المشروع؟')"
-                                                    class="btn btn-danger btn-sm">
-                                                    <i class="fas fa-trash-alt me-2"></i> &nbsp; حذف المشروع
-                                                </a>
-                                            </td>
+        @media screen and (max-width: 576px) {
+            .table-container th,
+            .table-container td {
+                font-size: 10px; /* Further reduce font size for very small screens */
+                min-width: 80px; /* Allow columns to shrink further */
+            }
+        }
+    </style>
 
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                                <div class="mt-4">
-                                    {{ $projects->links('vendor.pagination.bootstrap-5') }}
-                                </div>
-                            </table>
-                        </div>
+    <table class="table table-bordered table-hover table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>اسم الموظف</th>
+                <th>اسم صاحب الدعوة</th>
+                <th>المناسبة</th>
+                <th>اليوم</th>
+                <th>التاريخ</th>
+                <th>الوقت</th>
+                <th>المدينة</th>
+                <th>العنوان</th>
+                <th>رابط الموقع</th>
+                <th>صورة الدعوة</th>
+                <th>التعديل</th>
+                <th>الإجراءات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($mawayeedprojects as $mawayeedproject)
+                @php
+                    $types = [
+                        'marriage' => 'الزواج',
+                        'honoring' => 'تكريم',
+                        'events' => 'فعاليات',
+                        'national_occasions' => 'مناسبات وطنية',
+                        'launching' => 'تدشين',
+                    ];
+                @endphp
+                <tr>
+                    <td>{{ $mawayeedproject->employee->name }}</td>
+                    <td>{{ $mawayeedproject->invitation_name }}</td>
+                    <td>{{ $types[$mawayeedproject->occasion] ?? 'غير محدد' }}</td>
+                    <td>{{ $mawayeedproject->day }}</td>
+                    <td>{{ $mawayeedproject->date }}</td>
+                    <td>{{ $mawayeedproject->time }}</td>
+                    <td>{{ $mawayeedproject->city }}</td>
+                    <td>{{ $mawayeedproject->address }}</td>
+                    <td><a href="{{ $mawayeedproject->link }}"><u>Link</u></a></td>
+                    <td>
+                        @if ($mawayeedproject->image)
+                            <a href="{{ asset($mawayeedproject->image) }}" target="_blank">
+                                <img src="{{ asset($mawayeedproject->image) }}" alt="Project Image"
+                                    style="width: 100px; height: 55px; cursor: pointer;">
+                            </a>
+                        @else
+                            No Image
+                        @endif
+                    </td>
+                    <td>
+                        <a href="{{ route('admin.almawayeed.edit', $mawayeedproject->id) }}"
+                            class="btn btn-warning btn-sm">
+                            <i class="fas fa-edit me-2"></i>&nbsp;التعديل
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ route('admin.almawayeed.destroy', $mawayeedproject->id) }}"
+                            onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا المشروع؟')"
+                            class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash-alt me-2"></i>&nbsp; حذف المشروع
+                        </a>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+        <div class="mt-4">
+            {{ $projects->links('vendor.pagination.bootstrap-5') }}
+        </div>
+    </table>
+</div>
+
                         @php
                             $alkhidmaTypes = [
                                 'record_number' => 'بيع',
@@ -277,7 +317,7 @@
 
 
 
-                                            <td><a target="_blank"
+                                            <td><a
                                                     href="{{ url('admin/wahajprojects/edit/' . $wahajproject->id) }}"
                                                     class="btn btn-warning btn-sm">
                                                     <i class="fas fa-edit me-2"></i>&nbsp;التعديل

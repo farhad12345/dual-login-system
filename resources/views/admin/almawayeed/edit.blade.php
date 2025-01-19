@@ -16,16 +16,12 @@
                 <form action="{{ route('admin.almawayeed.update', $project->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT') <!-- Add PUT method for updating -->
-                    <input type="hidden" value="{{ auth()->user()->id }}" name="employee_id">
-
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="employee_id" class="form-label">الموظف</label>
                             <select name="employee_id" id="employee_id" class="form-control">
                                 @foreach ($users as $user)
-                                    <option value="{{ $user->id }}" {{ old('employee_id', $project->employee_id ?? '') == $user->id ? 'selected' : '' }}>
-                                        {{ $user->name }}
-                                    </option>
+                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -33,7 +29,7 @@
                             <label for="invitation_name" class="form-label">اسم صاحب الدعوة</label>
                             <input type="text" name="invitation_name" placeholder="أدخل اسم صاحب الدعوة" id="invitation_name"
                                 class="form-control @error('invitation_name') is-invalid @enderror"
-                                value="{{ old('invitation_name', $project->invitation_name ?? '') }}" required>
+                                value="{{ old('invitation_name', $project->company_name ?? '') }}" required>
                             @error('invitation_name')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -43,37 +39,39 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="day" class="form-label">اليوم</label>
+                            <label for="day" class="form-label"> اليوم</label>
                             <input type="text" name="day" placeholder="اليوم" id="day"
-                                class="form-control @error('day') is-invalid @enderror"
-                                value="{{ old('day', $project->day ?? '') }}" required>
+                            value="{{ old('day', $project->day ?? '') }}"  class="form-control @error('day') is-invalid @enderror" required>
                             @error('day')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
                             @enderror
                         </div>
-                        <div class="col-md-6">
-                            <label for="occasion" class="form-label">المناسبة</label>
-                            <select name="occasion" id="occasion" class="form-control @error('occasion') is-invalid @enderror">
-                                <option value="">Select</option>
-                                <option value="marriage" {{ old('occasion', $project->occasion ?? '') == 'marriage' ? 'selected' : '' }}>الزواج</option>
-                                <option value="honoring" {{ old('occasion', $project->occasion ?? '') == 'honoring' ? 'selected' : '' }}>تكريم</option>
-                                <option value="events" {{ old('occasion', $project->occasion ?? '') == 'events' ? 'selected' : '' }}>فعاليات</option>
-                                <option value="national_occasions" {{ old('occasion', $project->occasion ?? '') == 'national_occasions' ? 'selected' : '' }}>مناسبات وطنية</option>
-                                <option value="launching" {{ old('occasion', $project->occasion ?? '') == 'launching' ? 'selected' : '' }}>تدشين</option>
-                            </select>
-                            @error('occasion')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
+
+                      {{-- المناسبة --}}
+                      <div class="col-md-6">
+                        <label for="occasion" class="form-label"> المناسبة</label>
+                        <select name="occasion" id="occasion" class="form-control  @error('service_type') is-invalid @enderror">
+                            <option value="">Select </option>
+                            <option value="marriage" {{ old('occasion', $project->occasion) == 'marriage' ? 'selected' : '' }}>الزواج</option>
+                            <option value="honoring" {{ old('occasion', $project->occasion) == 'honoring' ? 'selected' : '' }}>تكريم</option>
+                            <option value="events" {{ old('occasion', $project->occasion) == 'events' ? 'selected' : '' }}>فعاليات</option>
+                            <option value="national_occasions" {{ old('occasion', $project->occasion) == 'national_occasions' ? 'selected' : '' }}>مناسبات وطنية</option>
+                            <option value="launching" {{ old('occasion', $project->occasion) == 'launching' ? 'selected' : '' }}>تدشين</option>
+                        </select>
+                        @error('occasion')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
+                    </div>
+
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="time" class="form-label">الوقت</label>
-                            <input type="text" name="time" placeholder="الوقت" id="time"
+                            <input type="time" name="time" placeholder="الوقت" id="time"
                                 class="form-control @error('time') is-invalid @enderror"
                                 value="{{ old('time', $project->time ?? '') }}" required>
                             @error('time')
@@ -82,11 +80,11 @@
                                 </div>
                             @enderror
                         </div>
+
                         <div class="col-md-6">
                             <label for="date" class="form-label">التاريخ</label>
-                            <input type="date" placeholder="التاريخ" name="date" id="date"
-                                class="form-control @error('date') is-invalid @enderror"
-                                value="{{ old('date', $project->date ?? '') }}" required>
+                            <input type="text" placeholder="التاريخ" name="date" value="{{ old('date', $project->date ?? '') }}" id="date"
+                                class="form-control @error('date') is-invalid @enderror" required>
                             @error('date')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -94,12 +92,12 @@
                             @enderror
                         </div>
                     </div>
+
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="city" class="form-label">المدينة</label>
-                            <input type="text" name="city" placeholder="المدينة" id="city"
-                                class="form-control @error('city') is-invalid @enderror"
-                                value="{{ old('city', $project->city ?? '') }}" required>
+                            <input type="text" name="city" placeholder="المدينة" value="{{ old('city', $project->city ?? '') }}" id="city"
+                                class="form-control @error('city') is-invalid @enderror" required>
                             @error('city')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -118,12 +116,13 @@
                             @enderror
                         </div>
                     </div>
+
                     <div class="row mb-3">
+
                         <div class="col-md-6">
                             <label for="address" class="form-label">العنوان</label>
-                            <input type="text" name="address" placeholder="العنوان" id="address"
-                                class="form-control @error('address') is-invalid @enderror"
-                                value="{{ old('address', $project->address ?? '') }}" required>
+                            <input type="text" name="address" value="{{ old('address', $project->address ?? '') }}" placeholder="العنوان" id="address"
+                                class="form-control @error('address') is-invalid @enderror" required>
                             @error('address')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -132,9 +131,8 @@
                         </div>
                         <div class="col-md-6">
                             <label for="link" class="form-label">رابط الموقع</label>
-                            <input type="text" name="link" placeholder="رابط الموقع" id="link"
-                                class="form-control @error('link') is-invalid @enderror"
-                                value="{{ old('link', $project->link ?? '') }}" required>
+                            <input type="text" name="link" value="{{ old('link', $project->link ?? '') }}" placeholder="رابط الموقع" id="link"
+                                class="form-control @error('link') is-invalid @enderror" required>
                             @error('link')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -142,6 +140,8 @@
                             @enderror
                         </div>
                     </div>
+
+
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="image" class="form-label">صورة الدعوة</label>
@@ -166,4 +166,18 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script>
+        $(document).ready(function () {
+            // Initialize the datepicker
+            $('#date').datepicker({
+                dateFormat: 'dd-mm-yy', // Change the format as needed
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "1900:2100"
+            });
+        });
+    </script>
+
 </x-app-layout>

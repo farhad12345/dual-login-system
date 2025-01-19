@@ -143,7 +143,6 @@
                             @enderror
                         </div>
                     </div>
-
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="business_type" class="form-label">السجل التجاري</label>
@@ -181,6 +180,7 @@
                             @enderror
                         </div>
                      </div>
+
                     <div class="d-flex justify-content-center">
                         <button type="submit" class="btn btn-success px-5">تحديث المشروع</button>
                     </div>

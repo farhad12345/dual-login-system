@@ -33,7 +33,7 @@
                                     <div class="col-md-6">
                                         <label for="day" class="form-label"> اليوم</label>
                                         <input type="text" name="day" placeholder="اليوم" id="day"
-                                            class="form-control @error('day') is-invalid @enderror" required>
+                                        value="{{ old('day', $project->day ?? '') }}"  class="form-control @error('day') is-invalid @enderror" required>
                                         @error('day')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -46,9 +46,9 @@
                                     <label for="occasion" class="form-label"> المناسبة</label>
                                     <select name="occasion" id="occasion" class="form-control  @error('service_type') is-invalid @enderror">
                                         <option value="">Select </option>
-                                        <option value="marriage">الزواج</option>
-                                        <option value="honoring">تكريم</option>
-                                        <option value="events">فعاليات</option>
+                                        <option value="marriage" >الزواج</option>
+                                        <option value="honoring" >تكريم</option>
+                                        <option value="events" >فعاليات</option>
                                         <option value="national_occasions">مناسبات وطنية</option>
                                         <option value="launching">تدشين</option>
                                     </select>
@@ -75,7 +75,7 @@
 
                                     <div class="col-md-6">
                                         <label for="date" class="form-label">التاريخ</label>
-                                        <input type="date" placeholder="التاريخ" name="date" id="date"
+                                        <input type="text" placeholder="التاريخ" name="date" value="{{ old('date', $project->date ?? '') }}" id="date"
                                             class="form-control @error('date') is-invalid @enderror" required>
                                         @error('date')
                                             <div class="invalid-feedback">
@@ -88,7 +88,7 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="city" class="form-label">المدينة</label>
-                                        <input type="text" name="city" placeholder="المدينة" id="city"
+                                        <input type="text" name="city" placeholder="المدينة" value="{{ old('city', $project->city ?? '') }}" id="city"
                                             class="form-control @error('city') is-invalid @enderror" required>
                                         @error('city')
                                             <div class="invalid-feedback">
@@ -113,7 +113,7 @@
 
                                     <div class="col-md-6">
                                         <label for="address" class="form-label">العنوان</label>
-                                        <input type="text" name="address" placeholder="العنوان" id="address"
+                                        <input type="text" name="address" value="{{ old('address', $project->address ?? '') }}" placeholder="العنوان" id="address"
                                             class="form-control @error('address') is-invalid @enderror" required>
                                         @error('address')
                                             <div class="invalid-feedback">
@@ -123,7 +123,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label for="link" class="form-label">رابط الموقع</label>
-                                        <input type="text" name="link" placeholder="رابط الموقع" id="link"
+                                        <input type="text" name="link" value="{{ old('link', $project->link ?? '') }}" placeholder="رابط الموقع" id="link"
                                             class="form-control @error('link') is-invalid @enderror" required>
                                         @error('link')
                                             <div class="invalid-feedback">
@@ -156,5 +156,19 @@
 
                     </div>
                 </div>
+                <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script>
+    $(document).ready(function () {
+        // Initialize the datepicker
+        $('#date').datepicker({
+            dateFormat: 'dd-mm-yy', // Change the format as needed
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "1900:2100"
+        });
+    });
+</script>
+
             </x-app-layout>
 
