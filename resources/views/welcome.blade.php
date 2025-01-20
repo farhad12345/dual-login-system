@@ -51,7 +51,7 @@
         <h1>مرحبًا بك في نظام تسجيل الدخول المزدوج   </h1>
              {{-- {{ Hash::make('jumana@123') }} --}}
    Testing fgfdf
-   this is teting
+   this is teting    this is teting   this is teting
         <div>
             <a href="{{ route('login') }}?role=admin" class="btn btn-primary">تسجيل الدخول كمسؤول</a>
         </div>
