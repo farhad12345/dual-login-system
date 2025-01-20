@@ -293,8 +293,7 @@ class OppintmentController extends Controller
                 'image' => $imagePath, // Save the updated path or retain the old one
             ]);
 
-            return back()->with('success', 'تم تحديث المشروع بنجاح.');
-
+ return redirect()->route('dashboard')->with('error', 'تحديث المشروع بنجاح');
 
         } catch (\Exception $e) {
             // Log the exception for debugging

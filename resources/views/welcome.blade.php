@@ -39,13 +39,43 @@
         background-repeat: no-repeat;
         background-size: cover;
     }
+    /* Responsive Media Queries */
+
+/* For tablets and small screens (width 768px and below) */
+@media (max-width: 768px) {
+    .welcome-container h1 {
+        font-size: 1.5rem; /* Reduce heading size */
+    }
+
+    .welcome-container a {
+        font-size: 0.9rem; /* Adjust button font size */
+        padding: 0.6rem 1.5rem; /* Adjust button padding */
+        width: 100%; /* Make buttons full-width */
+        max-width: 300px; /* Limit the maximum width of buttons */
+        margin: 0.5rem auto; /* Center buttons */
+    }
+}
+
+/* For mobile screens (width 480px and below) */
+@media (max-width: 480px) {
+    .welcome-container h1 {
+        font-size: 1.2rem; /* Further reduce heading size */
+        margin-bottom: 1rem; /* Adjust spacing */
+    }
+
+    .welcome-container a {
+        font-size: 0.8rem; /* Smaller button text */
+        padding: 0.5rem 1rem; /* Smaller button padding */
+    }
+}
+
         </style>
 </head>
   {{-- this is comment --}}
 <body class="back">
-    <div class="py-12 bg-blue-100 min-h-screen">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
-            <div class="bg-white shadow-md sm:rounded-lg overflow-hidden">
+    <div class="min-h-screen py-12 bg-blue-100">
+        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 ">
+            <div class="overflow-hidden bg-white shadow-md sm:rounded-lg">
 
     <div class="welcome-container ">
         <h1>مرحبًا بك في نظام تسجيل الدخول المزدوج   </h1>

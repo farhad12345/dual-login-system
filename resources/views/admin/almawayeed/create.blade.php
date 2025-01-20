@@ -1,14 +1,14 @@
    <x-app-layout>
                 <div class="container mt-5"  >
-                    <div class="card shadow-sm" >
-                        <div class="card-header bg-primary text-white">
+                    <div class="shadow-sm card" >
+                        <div class="text-white card-header bg-primary">
                             <h4 class="mb-0 text-center">إضافة مشروع جديد</h4>
                         </div>
                         <div class="card-body">
                             <form action="{{ route('admin.almawayeed.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
 
-                                <div class="row mb-3">
+                                <div class="mb-3 row">
                                     <div class="col-md-6">
                                         <label for="employee_id" class="form-label">الموظف</label>
                                         <select name="employee_id" id="employee_id" class="form-control">
@@ -29,7 +29,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="row mb-3">
+                                <div class="mb-3 row">
                                     <div class="col-md-6">
                                         <label for="day" class="form-label"> اليوم</label>
                                         <input type="text" name="day" placeholder="اليوم" id="day"
@@ -60,7 +60,7 @@
                                 </div>
                                 </div>
 
-                                <div class="row mb-3">
+                                <div class="mb-3 row">
                                     <div class="col-md-6">
                                         <label for="time" class="form-label">الوقت</label>
                                         <input type="time" name="time" placeholder="الوقت" id="time"
@@ -85,7 +85,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row mb-3">
+                                <div class="mb-3 row">
                                     <div class="col-md-6">
                                         <label for="city" class="form-label">المدينة</label>
                                         <input type="text" name="city" placeholder="المدينة" value="{{ old('city', $project->city ?? '') }}" id="city"
@@ -109,7 +109,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row mb-3">
+                                <div class="mb-3 row">
 
                                     <div class="col-md-6">
                                         <label for="address" class="form-label">العنوان</label>
@@ -124,7 +124,7 @@
                                     <div class="col-md-6">
                                         <label for="link" class="form-label">رابط الموقع</label>
                                         <input type="text" name="link" value="{{ old('link', $project->link ?? '') }}" placeholder="رابط الموقع" id="link"
-                                            class="form-control @error('link') is-invalid @enderror" required>
+                                            class="form-control @error('link') is-invalid @enderror" >
                                         @error('link')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -132,12 +132,12 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="row mb-3">
+                                <div class="mb-3 row">
                                     {{-- صورة الدعوة --}}
                                     <div class="col-md-6">
                                         <label for="image" class="form-label">صورة الدعوة </label>
                                         <input type="file" name="image" placeholder="صورة الدعوة " id="image"
-                                            class="form-control @error('image') is-invalid @enderror" required>
+                                            class="form-control @error('image') is-invalid @enderror" >
                                         @error('image')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -149,14 +149,14 @@
                                 </div>
 
                                 <div class="d-flex justify-content-center">
-                                    <button type="submit" class="btn btn-success px-5">حفظ المشروع</button>
+                                    <button type="submit" class="px-5 btn btn-success">حفظ المشروع</button>
                                 </div>
                             </form>
                         </div>
 
                     </div>
                 </div>
-                <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script>
     $(document).ready(function () {

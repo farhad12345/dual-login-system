@@ -1,10 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\RoleMiddleware;
-use App\Http\Controllers\oppointments\OppintmentController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\RoleMiddleware;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\oppointments\OppintmentController;
 
 //this routes for المواعيد
 Route::get('/almawayeed/login', [OppintmentController::class, 'loginForm'])->name('almawayeed.login');
@@ -27,3 +28,4 @@ Route::middleware(['mawayeedauth'])
         Route::post('/project/store', [OppintmentController::class, 'almawayeedStore'])->name('project.store');
 
     });
+    Route::get('/get/maveed_prevoius_data/list', [DashboardController::class, 'GetMaveedPrevoisuListData'])->name('maveed.prevoius.data');

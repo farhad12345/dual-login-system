@@ -85,16 +85,32 @@ class DashboardController extends Controller
         //   })
         //   ->orderBy('mayeed_projects.date', 'desc') // Assuming 'date' is the column for sorting
         //   ->paginate(10);
-        $mawayeedprojects = MawayeedProject::with('employee')
+   $latestDate = MawayeedProject::selectRaw("MAX(STR_TO_DATE(date, '%d-%m-%Y')) AS latest_date")
+        ->value('latest_date');
+
+    // Query for projects, but handle the case where latestDate is null
+    $query = MawayeedProject::with('employee')
         ->select(
             'mayeed_projects.*',
             'mawayeed_users.id as user_id',
             'mawayeed_users.name as employee_name'
         )
-        ->leftJoin('mawayeed_users', 'mayeed_projects.employee_id', '=', 'mawayeed_users.id')
-        ->orderByRaw("ABS(DATEDIFF(mayeed_projects.date, CURDATE())) ASC") // Sort by closest due date
-        ->orderBy('mayeed_projects.date', 'asc') // Secondary sort by date in ascending order
-        ->paginate(10);
+        ->leftJoin('mawayeed_users', 'mayeed_projects.employee_id', '=', 'mawayeed_users.id');
+
+    // If latestDate is not null, filter by it
+    if ($latestDate) {
+        $latestDateFormatted = DB::raw("DATE_FORMAT(STR_TO_DATE('$latestDate', '%Y-%m-%d'), '%d-%m-%Y')");
+        $query->where('mayeed_projects.date', $latestDateFormatted); // Filter for the latest date
+    } else {
+        // If latestDate is null, filter for the last 10 days
+        $query->where('mayeed_projects.date', '>=', now()->subDays(5)->format('d-m-Y'));
+    }
+
+    // Order by date (either the latest date or the last 10 days)
+    $query->orderByRaw("STR_TO_DATE(mayeed_projects.date, '%d-%m-%Y') ASC");
+
+    // Execute the query and paginate results
+    $mawayeedprojects = $query->paginate(10);
 
 
 
@@ -483,5 +499,22 @@ class DashboardController extends Controller
         // Redirect back with a success message
         return back()->with('success', 'تم حفظ السبب بنجاح وإرسال إشعار إلى الموظف!');
     }
+    public function GetMaveedPrevoisuListData(Request $request)
+    {
+        try {
+            $projectsQuery = MawayeedProject::with('employee');
+        // Filter for employee name in the `users` table
+        if ($request->filled('filterName')) {
+            $projectsQuery->where('users.name', 'like', '%' . $request->filterName . '%');
+        }
 
+        $total = $projectsQuery->count();
+        $projects = $projectsQuery->orderBy('mayeed_projects.id', 'desc')->paginate(10);
+
+            $view = View('admin.almawayeed._html', compact('projects'))->render();
+            return response()->json(['status' => 'success', 'html' => $view, 'total' => $total]);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'fail', 'msg' => $e->getMessage() . ':' . $e->getLine()]);
+        }
+    }
 }

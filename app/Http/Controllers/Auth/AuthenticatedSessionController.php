@@ -10,18 +10,33 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\EmployeRequest;
-
 class AuthenticatedSessionController extends Controller
 {
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create(Request $request): View
     {
+              Auth::guard('web')->logout();
+        Auth::logout();
+        session()->invalidate();
+        session()->regenerateToken();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
         return view('auth.login');
     }
-    public function Employee(): View
+    public function Employee(Request $request): View
     {
+             Auth::guard('web')->logout();
+        Auth::logout();
+        session()->invalidate();
+        session()->regenerateToken();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
         return view('auth.employee-Login');
     }
     public function EmployeeStore(EmployeRequest $request)

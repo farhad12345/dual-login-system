@@ -181,6 +181,6 @@ Route::middleware('auth')->group(function () {
 
 
 //apis
-Route::get('/get/amertm_data/list', [DashboardController::class, 'adminDashboardListData'])->name('profile.edit');
+Route::get('/get/amertm_data/list', [DashboardController::class, 'adminDashboardListData'])->name('amertam.data.list');
 
 Route::get('projects/report/download', [DashboardController::class, 'downloadProjectsReport'])->name('projects.report.download');
