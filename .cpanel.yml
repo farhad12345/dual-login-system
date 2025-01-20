@@ -1,16 +1,10 @@
-on: push
-name: 🚀 Deploy website on push
-jobs:
-  web-deploy:
-    name: 🎉 Deploy code
-    runs-on: ubuntu-latest
-    steps:
-    - name: 🚚 Get latest code
-      uses: actions/checkout@v2
-
-    - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@4.0.0
-      with:
-        server: 38.91.101.117
-        username: farhanenterprise
-        password: ktLY?$i&K8u&
+##### THIS ALLOWS US TO DEPLOY THE SITE FROM A GIT REPO ######—Deployment:
+Tasks:
+   export DEPLOYPATH=/home/amertmco/backendCode
+ /bin/cp -R .vscode $DEPLOYPATH
+ /bin/cp -R assets $DEPLOYPATH
+ /bin/cp -R css $DEPLOYPATH
+ /bin/cp -R fonts $DEPLOYPATH
+ /bin/cp -R img $DEPLOYPATH
+ /bin/cp -R js $DEPLOYPATH
+/bin/cp index.html $DEPLOYPATH

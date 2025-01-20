@@ -43,13 +43,14 @@
 </head>
   {{-- this is comment --}}
 <body class="back">
-    <div class="py-12 bg-blue-100 min-h-screen">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
-            <div class="bg-white shadow-md sm:rounded-lg overflow-hidden">
+    <div class="min-h-screen py-12 bg-blue-100">
+        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 ">
+            <div class="overflow-hidden bg-white shadow-md sm:rounded-lg">
 
     <div class="welcome-container ">
         <h1>مرحبًا بك في نظام تسجيل الدخول المزدوج   </h1>
              {{-- {{ Hash::make('jumana@123') }} --}}
+             gg
         <div>
             <a href="{{ route('login') }}?role=admin" class="btn btn-primary">تسجيل الدخول كمسؤول</a>
         </div>
