@@ -1,0 +1,31 @@
+name: Deploy to cPanel
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJXOZ1+..." > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H development.haatsign.sa >> ~/.ssh/known_hosts
+
+    - name: Deploy to cPanel
+      run: |
+        ssh haatsign@development.haatsign.sa << 'EOF'
+        cd public_html
+        mkdir -p deploy_folder
+        cd deploy_folder
+        git init
+        git remote add origin git@github.com:farhad12345/dual-login-system.git
+        git pull origin master
+        EOF
