@@ -6,7 +6,7 @@ use App\Http\Controllers\wahajwatan\WahajController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
 //this routes for وهج وطن
-Route::get('/wahajwatan/login', [WahajController::class, 'loginForm'])->name('wahajwatan.login');
+Route::get('/wahajwatan/login', action: [WahajController::class, 'loginForm'])->name('wahajwatan.login');
 Route::post('/wahajwatan/save/login', [WahajController::class, 'login'])->name('wahajwatan.save.login');
 Route::post('/wahajuser/logout', [WahajController::class, 'logout'])->name('wahajuser.logout');
 Route::get('/wahajwatan/register', [WahajController::class, 'Registerform'])->name('wahajwatan.register');
@@ -26,6 +26,7 @@ Route::middleware(['wahajauth'])
 
     });
 
+    Route::get('/get/wahaj_talab_data/list', action: [WahajController::class, 'WahajListData']);
 
 
 

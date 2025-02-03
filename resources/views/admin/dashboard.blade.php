@@ -7,10 +7,10 @@
     .logo{
      position: relative;
     margin-top: -80px;
-        
+
     }
     .addbutton {
-     width:130px;   
+     width:130px;
      color:white;
     }
     .table-btn {
@@ -91,7 +91,7 @@
         -webkit-overflow-scrolling: touch;
     }
     .addbutton {
-     width:130px;   
+     width:130px;
      color:white;
     }
     /* Adjust table font size for smaller screens */
@@ -127,10 +127,12 @@
 
         <div class="d-flex justify-content-between align-items-center mb-3 px-4">
             <!-- Left Aligned Button -->
-            <a href="#" id="Prevoiusbtnmaweed" class="btn btn-primary addbutton">
+            <a href="#" id="Prevoiusbtnmaweed" class="btn btn-primary addbutton ">
                 <i class="fas fa-eye"></i>المواعيد السابقه
             </a>
-
+            <a href="#" id="wahajpreButoon" class="btn btn-primary ">
+                <i class="fas fa-eye"></i> طلب
+            </a>
             <!-- Right Aligned Buttons (conditionally displayed) -->
             <div>
                 <a href="{{ route('admin.projects.create') }}" id="newbtn1" class="btn btn-primary addbutton newbtn" style="display: block;">
@@ -154,58 +156,58 @@
 
                 <div class="p-12">
                     <div id="apppend_here_almaweed">
-
-
+                    </div>
+                    <div id="apppend_here_wahaj_project">
                     </div>
                     <div class="rtl-container" style="direction: rtl;">
                    <div id="table-1" class="table-container">
-    <!-- Filters Section -->
-    <div class="p-1 mb-4 rounded row s form-group">
-        <div class="pt-2 col-md-3">
-            <input type="text" name="employee_name" id="employee_name"
-                value="{{ request('employee_name') }}"
-                class="shadow-sm form-control form-control-lg" placeholder="اسم الموظف">
-        </div>
-        <div class="pt-2 col-md-4">
-            <input type="text" name="companyname" id="companName"
-                value="{{ request('companyname') }}"
-                class="shadow-sm form-control form-control-lg" placeholder="اسم المنشأة">
-        </div>
-        <div class="pt-2 col-md-4">
-            <select name="status" id="Filterstatus"
-                class="shadow-sm form-select form-select-lg">
-                <option value="">جميع الحالات</option>
-                <option value="started" {{ request('status')=='started' ? 'selected' : '' }}>تم
-                    البدء</option>
-                <option value="in_progress" {{ request('status')=='in_progress' ? 'selected' : '' }}>قيد التنفيذ</option>
-                <option value="completed" {{ request('status')=='completed' ? 'selected' : '' }}>مكتمل</option>
-            </select>
-        </div>
-    </div>
+                        <!-- Filters Section -->
+                        <div class="p-1 mb-4 rounded row s form-group">
+                            <div class="pt-2 col-md-3">
+                                <input type="text" name="employee_name" id="employee_name"
+                                    value="{{ request('employee_name') }}"
+                                    class="shadow-sm form-control form-control-lg" placeholder="اسم الموظف">
+                            </div>
+                            <div class="pt-2 col-md-4">
+                                <input type="text" name="companyname" id="companName"
+                                    value="{{ request('companyname') }}"
+                                    class="shadow-sm form-control form-control-lg" placeholder="اسم المنشأة">
+                            </div>
+                            <div class="pt-2 col-md-4">
+                                <select name="status" id="Filterstatus"
+                                    class="shadow-sm form-select form-select-lg">
+                                    <option value="">جميع الحالات</option>
+                                    <option value="started" {{ request('status')=='started' ? 'selected' : '' }}>تم
+                                        البدء</option>
+                                    <option value="in_progress" {{ request('status')=='in_progress' ? 'selected' : '' }}>قيد التنفيذ</option>
+                                    <option value="completed" {{ request('status')=='completed' ? 'selected' : '' }}>مكتمل</option>
+                                </select>
+                            </div>
+                        </div>
 
-    <!-- Table Section -->
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover table-striped">
-            <thead class="table-dark">
-                <tr>
-                    <th>#</th>
-                    <th>اسم الموظف</th>
-                    <th>اسم المنشأة</th>
-                    <th>الخدمة المطلوبة</th>
-                    <th> الجهة المقدمة لخدمة</th>
-                    <th>آخر تسجيل دخول</th>
-                    <th>حالة الوقت</th>
-                    <th>الحالة</th>
-                    <th>التقرير </th>
-                    <th>التعديل</th>
-                    <th>الإجراءات</th>
-                </tr>
-            </thead>
-            <tbody id="apppend_here">
-                <!-- Dynamic Data Here -->
-            </tbody>
-        </table>
-    </div>
+                <!-- Table Section -->
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>اسم الموظف</th>
+                                <th>اسم المنشأة</th>
+                                <th>الخدمة المطلوبة</th>
+                                <th> الجهة المقدمة لخدمة</th>
+                                <th>آخر تسجيل دخول</th>
+                                <th>حالة الوقت</th>
+                                <th>الحالة</th>
+                                <th>التقرير </th>
+                                <th>التعديل</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="apppend_here">
+                            <!-- Dynamic Data Here -->
+                        </tbody>
+                    </table>
+                </div>
 
     <!-- Pagination Section -->
     <div class="text-end">
@@ -725,6 +727,14 @@
             $("#apppend_here").html('');
             GetAmertamData()
         });
+        $(document).on('click', '#wahajpreButoon', function(e) {
+            $("#apppend_here_wahaj_project").html('');
+            $("#table-1").hide();
+            $('#table-2').hide();
+            $('#table-3').hide();
+            $('#table-4').hide();
+            GetWahajTalabData()
+        });
         $(document).on('change', '#companName', function(e) {
             $("#apppend_here").html('');
             GetAmertamData()
@@ -775,7 +785,9 @@
     function handleButtonVisibility(targetId) {
         // Hide all "newbtn" buttons
         $('.newbtn').hide();
+        $('#Prevoiusbtnmaweed').hide();
         $('#apppend_here_almaweed').hide();
+
         // Show the button corresponding to the targetId
         switch (targetId) {
             case 'table-1':
@@ -783,23 +795,30 @@
                 $("#table-1").show();
                 GetAmertamData();
                 $('#apppend_here_almaweed').hide();
+                $('#wahajpreButoon').hide();
+                $('#Prevoiusbtnmaweed').hide();
 
                 break;
             case 'table-2':
                 $('#newbtn2').show();
                 $('#apppend_here_almaweed').hide();
                 $('#table-2').show();
+                $('#wahajpreButoon').hide();
+                $('#Prevoiusbtnmaweed').show();
                 break;
             case 'table-3':
                 $('#newbtn3').show();
                 $('#apppend_here_almaweed').hide();
                 $('#table-3').show();
+                $('#wahajpreButoon').show();
+                $('#Prevoiusbtnmaweed').hide();
                 break;
             default:
                 console.warn('No button associated with targetId:', targetId);
         }
     }
-
+    $('#wahajpreButoon').hide();
+    $('#Prevoiusbtnmaweed').hide();
             // Event listener for table buttons
             $('.table-btn').on('click', function(e) {
                 e.preventDefault(); // Prevent default button behavior
@@ -815,14 +834,17 @@
                     case 'table-1':
                         $(this).addClass('btn-danger'); // For آمرتم button
                         $('#apppend_here_almaweed').hide();
+                        // $('#Prevoiusbtnmaweed').hide();
                         break;
                     case 'table-2':
                         $(this).addClass('btn-info'); // For المواعيد button
                         $('#apppend_here_almaweed').hide();
+                        // $('#Prevoiusbtnmaweed').show();
                         break;
                     case 'table-3':
                         $(this).addClass('btn-success'); // For وهج وطن button
                         $('#apppend_here_almaweed').hide();
+                        // $('#Prevoiusbtnmaweed').hide();
                         break;
                     default:
                         $(this).addClass('btn-primary'); // Default color
@@ -885,7 +907,7 @@ function GetMaweedPrevoiusData(page = 1, per_page = 10) {
         }
     });
 }
-       function render_maweed_pagination_links(total_items, per_page, current_page) {
+function render_maweed_pagination_links(total_items, per_page, current_page) {
             // Calculate the total number of pages
             var total_pages = Math.ceil(total_items / per_page);
 
@@ -917,6 +939,84 @@ function GetMaweedPrevoiusData(page = 1, per_page = 10) {
                 }
             }
             $('#maweed_pagination').html(pagination_html);
+        }
+
+
+        function GetWahajTalabData(page = 1, per_page = 10) {
+    var filterName = $("#employee_name").val();
+    var statusFilter = $("#Filterstatus").val();
+    var companyName = $("#companName").val();
+    $.ajax({
+        url: '/get/wahaj_talab_data/list?page=' + page + '&per_page=' + per_page,
+        type: "Get",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {
+            filterName: filterName,
+            statusFilter: statusFilter,
+            companyName: companyName
+        },
+        dataType: "JSON",
+        cache: false,
+        success: function(response) {
+            console.log(response);
+            if (response["status"] == "fail") {
+                $('.loader').css('display', 'none');
+                // toastr.error(response.msg);
+            } else if (response["status"] == "success") {
+                if (response['html'] == '') {
+
+                    $("#apppend_here_wahaj_project").html(
+                        '<tr class="text-center"><td colspan="10"><span class="fs-6 text-danger">No Data Found</span></td></tr>'
+                    );
+                } else {
+                    $('#check_loader_image').css('display', 'none');
+                    console.log(response['html']);
+                    $("#apppend_here_wahaj_project").html(response['html']);
+                }
+                console.log(response['total']);
+                render_wahaj_talab_pagination_links(response['total'], per_page, page);
+                $('.loader').css('display', 'none');
+            }
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+}
+function render_wahaj_talab_pagination_links(total_items, per_page, current_page) {
+            // Calculate the total number of pages
+            var total_pages = Math.ceil(total_items / per_page);
+
+            var pagination_html = '';
+            if (total_pages > 1) {
+                // Add the "previous" link if the current page is not the first page
+                if (current_page > 1) {
+                    pagination_html += '<a href="javascript:;" onclick="GetWahajTalabData(' + (current_page -
+                            1) +
+                        ',' +
+                        per_page + ')">Prev</a>';
+                }
+                // Add links for the current page and the surrounding pages
+                for (var i = Math.max(current_page - 2, 1); i <= Math.min(current_page + 2, total_pages); i++) {
+                    if (i == current_page) {
+                        pagination_html += '<span>' + i + '</span>';
+                    } else {
+                        pagination_html += '<a href="javascript:;" onclick="GetWahajTalabData(' + i + ',' +
+                            per_page + ')">' +
+                            i + '</a>';
+                    }
+                }
+                // Add the "next" link if the current page is not the last page
+                if (current_page < total_pages) {
+                    pagination_html += '<a href="javascript:;" onclick="GetWahajTalabData(' + (current_page +
+                            1) +
+                        ',' +
+                        per_page + ')">Next</a>';
+                }
+            }
+            $('#wahaj_pagination').html(pagination_html);
         }
     </script>
 </x-app-layout>

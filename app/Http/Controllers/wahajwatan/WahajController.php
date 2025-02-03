@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\wahajwatan;
 
 use Log;
+use Exception;
 use App\Models\User;
 use App\Models\Project;
 use App\Models\WahajUser;
@@ -13,9 +14,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use App\Mail\ProjectCreatedNotification;
 use Illuminate\Support\Facades\Validator;
+
 class WahajController extends Controller
 {
     public function loginForm()
@@ -68,7 +71,7 @@ class WahajController extends Controller
     public function Registerform()
     {
         $id = session('wahajuser_id');
-        
+
         return view('wahajusers.register',compact('id'));
     }
     public function RegisterStore(Request $request)
@@ -212,13 +215,13 @@ class WahajController extends Controller
     public function WahajProjectStore(Request $request)
     {
         // $validator = Validator::make($request->all(), [
-        //    
+        //
         //     'record_number' => 'required|string|max:255',
         //     'license_number' => 'required|string|max:255',
         //     'origin_name' => 'required|string|max:255',
-        // 
+        //
         // ]);
-        
+
         // if ($validator->fails()) {
         //     // Redirect back with validation errors
         //     return redirect()->back()->withErrors($validator)->withInput();
@@ -309,6 +312,30 @@ class WahajController extends Controller
             return redirect()->route('dashboard')->with('error', 'فشل في تحديث المشروع.');
         }
     }
+    public function WahajListData(Request $request)
+    {
+        try {
+            $currentDate = now()->format('d-m-Y');
+
+            // Start building the query
+            $projectsQuery = WahajWatanDetail::with('employee');
+            // Apply the filter if provided
+            if ($request->filled('filterName')) {
+                $projectsQuery->where('mawayeed_users.name', 'like', '%' . $request->filterName . '%');
+            }
+
+            // Apply sorting and paginate
+            $projects = $projectsQuery
+                ->paginate(10);
+            // // Get the total count of records
+            $total = $projectsQuery->count();
+
+            $view = View('admin.wahaj_html', compact('projects'))->render();
+            return response()->json(['status' => 'success', 'html' => $view, 'total' => $total]);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'fail', 'msg' => $e->getMessage() . ':' . $e->getLine()]);
+        }
+    }
       private function clear()
     {
             Artisan::call('cache:clear');
@@ -324,7 +351,7 @@ class WahajController extends Controller
 
     // Clear compiled classes
     Artisan::call('optimize:clear');
-    
+
        Auth::logout();
     $request->session()->invalidate();
     $request->session()->regenerateToken();
